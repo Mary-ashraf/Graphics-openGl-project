@@ -49,6 +49,18 @@ namespace our {
 
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, (void*)0);
+
+            glEnableVertexAttribArray(ATTRIB_LOC_TEXCOORD); 
+            glVertexAttribPointer(ATTRIB_LOC_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex_coord));
+
+            glEnableVertexAttribArray(ATTRIB_LOC_POSITION); 
+            glVertexAttribPointer(ATTRIB_LOC_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+
+            glEnableVertexAttribArray(ATTRIB_LOC_NORMAL); 
+            glVertexAttribPointer(ATTRIB_LOC_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+
+            glEnableVertexAttribArray(ATTRIB_LOC_COLOR); 
+            glVertexAttribPointer(ATTRIB_LOC_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
             
             glBindVertexArray(0);
             
@@ -58,17 +70,9 @@ namespace our {
         void draw() 
         {
             //TODO: (Req 2) Write this function
-            if(elementCount > 0){
                 glBindVertexArray(VAO);
-                //glDrawArrays(GL_TRIANGLES, 0, 3);
                 glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
                 glBindVertexArray(0);
-            }
-            else{
-                glBindVertexArray(VAO);
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-                glBindVertexArray(0);
-            }
         }
 
         // this function should delete the vertex & element buffers and the vertex array object
