@@ -1,0 +1,86 @@
+#pragma once
+
+#include <glad/gl.h>
+#include "vertex.hpp"
+
+namespace our {
+
+    #define ATTRIB_LOC_POSITION 0
+    #define ATTRIB_LOC_COLOR    1
+    #define ATTRIB_LOC_TEXCOORD 2
+    #define ATTRIB_LOC_NORMAL   3
+
+    class Mesh {
+        // Here, we store the object names of the 3 main components of a mesh:
+        // A vertex array object, A vertex buffer and an element buffer
+        unsigned int VBO, EBO;
+        unsigned int VAO;
+        // We need to remember the number of elements that will be drawn by glDrawElements 
+        GLsizei elementCount;
+    public:
+
+        // The constructor takes two vectors:
+        // - vertices which contain the vertex data.
+        // - elements which contain the indices of the vertices out of which each rectangle will be constructed.
+        // The mesh class does not keep a these data on the RAM. Instead, it should create
+        // a vertex buffer to store the vertex data on the VRAM,
+        // an element buffer to store the element data on the VRAM,
+        // a vertex array object to define how to read the vertex & element buffer during rendering 
+        Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& elements)
+        {
+            //TODO: (Req 2) Write this function
+            // remember to store the number of elements in "elementCount" since you will need it for drawing
+            // For the attribute locations, use the constants defined above: ATTRIB_LOC_POSITION, ATTRIB_LOC_COLOR, etc
+            //Generate buffers
+            glGenVertexArrays(1, &VAO);
+            glGenBuffers(1, &VBO);
+            glGenBuffers(1, &EBO);
+
+            //Bind and set vertex array and buffer
+            glBindVertexArray(VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+            //Bind and set elements buffer
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned int), &elements[0], GL_STATIC_DRAW);
+            elementCount = elements.size();
+
+
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, (void*)0);
+            
+            glBindVertexArray(0);
+            
+        }
+
+        // this function should render the mesh
+        void draw() 
+        {
+            //TODO: (Req 2) Write this function
+            if(elementCount > 0){
+                glBindVertexArray(VAO);
+                //glDrawArrays(GL_TRIANGLES, 0, 3);
+                glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
+                glBindVertexArray(0);
+            }
+            else{
+                glBindVertexArray(VAO);
+                glDrawArrays(GL_TRIANGLES, 0, 3);
+                glBindVertexArray(0);
+            }
+        }
+
+        // this function should delete the vertex & element buffers and the vertex array object
+        ~Mesh(){
+            //TODO: (Req 2) Write this function
+            glDeleteVertexArrays(1, &VAO);
+            glDeleteBuffers(1, &EBO);
+            glDeleteBuffers(1, &VBO);
+        }
+
+        Mesh(Mesh const &) = delete;
+        Mesh &operator=(Mesh const &) = delete;
+    };
+
+}
