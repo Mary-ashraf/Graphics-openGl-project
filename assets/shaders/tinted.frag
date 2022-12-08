@@ -13,4 +13,5 @@ void main(){
     // by multiplying the tint with the vertex color
     //frag_color = vec4(1.0);
     frag_color = tint * fs_in.color;
+    //gl_Position = transform * vec4(position, 1.0);
 }
