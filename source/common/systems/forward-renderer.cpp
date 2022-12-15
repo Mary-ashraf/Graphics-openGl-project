@@ -22,7 +22,13 @@ namespace our {
             //TODO: (Req 10) Pick the correct pipeline state to draw the sky
             // Hints: the sky will be draw after the opaque objects so we would need depth testing but which depth funtion should we pick?
             // We will draw the sphere from the inside, so what options should we pick for the face culling.
-            PipelineState skyPipelineState{};
+            PipelineState skyPipelineState{
+                skyPipelineState.faceCulling.enabled = true,
+                skyPipelineState.faceCulling.frontFace = GL_CCW,
+                skyPipelineState.faceCulling.culledFace = GL_FRONT,
+                skyPipelineState.depthTesting.enabled = true,
+                skyPipelineState.depthTesting.function = GL_LEQUAL
+            };
             
             // Load the sky texture (note that we don't need mipmaps since we want to avoid any unnecessary blurring while rendering the sky)
             std::string skyTextureFile = config.value<std::string>("sky", "");
@@ -182,22 +188,28 @@ namespace our {
         // If there is a sky material, draw the sky
         if(this->skyMaterial){
             //TODO: (Req 10) setup the sky material
-            
+            skyMaterial->setup();
             //TODO: (Req 10) Get the camera position
-            
-            //TODO: (Req 10) Create a model matrix for the sy such that it always follows the camera (sky sphere center = camera position)
-            
+            glm::vec3 cameraPosition = glm::vec3(VM[3][0], VM[3][1], VM[3][2]); //4th row
+            //TODO: (Req 10) Create a model matrix for the sky such that it always follows the camera (sky sphere center = camera position)
+            glm::mat4 view = glm::mat4(1.0f);
+            view[0][3] = cameraPosition[0];
+            view[1][3] = cameraPosition[1];
+            view[2][3] = cameraPosition[2];
             //TODO: (Req 10) We want the sky to be drawn behind everything (in NDC space, z=1)
-            // We can acheive the is by multiplying by an extra matrix after the projection but what values should we put in it?
+            // We can acheive this by multiplying by an extra matrix after the projection but what values should we put in it?
+            glm::mat4 projection = camera->getProjectionMatrix(windowSize);
+            float far = camera->far;
             glm::mat4 alwaysBehindTransform = glm::mat4(
                 1.0f, 0.0f, 0.0f, 0.0f,
                 0.0f, 1.0f, 0.0f, 0.0f,
-                0.0f, 0.0f, 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f
+                0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 1.0f, 1.0f
             );
             //TODO: (Req 10) set the "transform" uniform
-            
+            skyMaterial->shader->set("transform",  alwaysBehindTransform * projection * view);
             //TODO: (Req 10) draw the sky sphere
+            skySphere->draw();
             
         }
         //TODO: (Req 9) Draw all the transparent commands
