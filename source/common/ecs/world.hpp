@@ -71,11 +71,11 @@ namespace our {
 
             while (it != entities.end())
             {
-                entities.erase(it);
                 delete *it;
                 ++it;
             }
 
+            entities.clear();
             markedForRemoval.clear();
         }
 
