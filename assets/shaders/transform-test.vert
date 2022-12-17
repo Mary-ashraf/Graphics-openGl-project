@@ -23,5 +23,4 @@ void main(){
     vs_out.color = color;
     vs_out.tex_coord = tex_coord;
     vs_out.normal = normal;
-    //vs_out.normal = normal;
 }
