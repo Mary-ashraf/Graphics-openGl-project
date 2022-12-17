@@ -45,8 +45,8 @@ namespace our {
         //TODO: (Req 7) Write this function
         TintedMaterial::setup();
         shader->set("alphaThreshold", alphaThreshold);
-        texture->bind();
-        sampler->bind(0);
+        if (texture) texture->bind();
+        if (sampler) sampler->bind(0);
         shader->set("tex", 0);
     
     }
