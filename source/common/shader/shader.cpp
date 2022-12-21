@@ -26,6 +26,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const 
     // compilation error and print it so that you can know what is wrong with
     // the shader. The returned string will be empty if there is no errors.
     GLuint shader = glCreateShader(type);
+    //(Shader, count, pointer that points to string of shader code, null indicates that the string is null terminated (length))
     glShaderSource(shader, 1, &sourceCStr, nullptr);
     glCompileShader(shader);
     std::string compilationError = checkForShaderCompilationErrors(shader);
