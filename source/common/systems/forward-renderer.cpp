@@ -186,7 +186,7 @@ namespace our {
 
         //TODO: (Req 9) Draw all the opaque commands
         //Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render 
-        for (int i = 0; i < opaqueCommands.size(); i++)
+        for (unsigned long int i = 0; i < opaqueCommands.size(); i++)
         {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
@@ -223,7 +223,7 @@ namespace our {
         }
         //TODO: (Req 9) Draw all the transparent commands
         //Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
-        for (int i = 0; i < transparentCommands.size(); i++)
+        for (unsigned long int i = 0; i < transparentCommands.size(); i++)
         {
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
