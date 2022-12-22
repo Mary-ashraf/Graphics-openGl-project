@@ -39,7 +39,7 @@ namespace our {
 
         glm::vec3 eyeWorldPos(M * glm::vec4(0,0,0,1));
         glm::vec3 centerWorldPos(M * glm::vec4(0,0,-1,1));
-        glm::vec3 upWorldPos(M * glm::vec4(0,1,0,1));
+        glm::vec3 upWorldPos(M * glm::vec4(0,1,0,0));
 
         return glm::lookAt(eyeWorldPos, centerWorldPos, upWorldPos);
     }
