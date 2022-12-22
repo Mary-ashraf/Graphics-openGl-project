@@ -13,12 +13,14 @@ namespace our {
         Texture2D() {
             //TODO: (Req 5) Complete this function
             glGenTextures(1, &name);
+            // 1 is the number of texture names to be generated
         };
 
         // This deconstructor deletes the underlying OpenGL texture
         ~Texture2D() { 
             //TODO: (Req 5) Complete this function
             glDeleteTextures(1, &name);
+            // 1 is the number of texture names to be deleted
         }
 
         // Get the internal OpenGL name of the texture which is useful for use with framebuffers
@@ -36,6 +38,7 @@ namespace our {
         static void unbind(){
             //TODO: (Req 5) Complete this function
             glBindTexture(GL_TEXTURE_2D, 0);
+            // 0 to unbind the texture
         }
 
         Texture2D(const Texture2D&) = delete;
