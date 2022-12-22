@@ -39,7 +39,7 @@ namespace our {
 
         glm::vec3 eyeWorldPos(M * glm::vec4(0,0,0,1));
         glm::vec3 centerWorldPos(M * glm::vec4(0,0,-1,1));
-        glm::vec3 upWorldPos(M * glm::vec4(0,1,0,1));
+        glm::vec3 upWorldPos(M * glm::vec4(0,1,0,0));
 
         return glm::lookAt(eyeWorldPos, centerWorldPos, upWorldPos);
     }
@@ -53,6 +53,7 @@ namespace our {
         // Left and Right are the same but after being multiplied by the aspect ratio
         // For the perspective camera, you can use glm::perspective
         
+        /*Get aspect ratio by dividing screenX/screenY*/
         float aspectRatio = (float)viewportSize.x/viewportSize.y;
         if (cameraType == CameraType::PERSPECTIVE)
         {
