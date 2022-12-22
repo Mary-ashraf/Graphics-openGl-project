@@ -15,6 +15,7 @@ namespace our {
         glm::mat4 globalTransform = this->localTransform.toMat4();
         if (this->parent != nullptr)
         {
+            /*if there is a parent, multiply this entity's local transform by it's parents transform*/
             globalTransform = this->parent->getLocalToWorldMatrix() * globalTransform;
         }
         return globalTransform;
