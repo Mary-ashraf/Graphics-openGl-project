@@ -32,7 +32,7 @@ namespace our {
         // This static method ensures that no sampler is bound to the given texture unit
         static void unbind(GLuint textureUnit){
             //TODO: (Req 6) Complete this function
-            glBindSampler(textureUnit, 0);
+            glBindSampler(textureUnit, 0); // 0 to unbind the sampler
         }
 
         // This function sets a sampler paramter where the value is of type "GLint"
@@ -40,6 +40,7 @@ namespace our {
         void set(GLenum parameter, GLint value) const {
             //TODO: (Req 6) Complete this function
             glSamplerParameteri(name, parameter, value);
+            //(Glint is a signed integer type, so it can be used to set the filtering and wrapping parameters) value
         }
 
         // This function sets a sampler paramter where the value is of type "GLfloat"
@@ -47,12 +48,15 @@ namespace our {
         void set(GLenum parameter, GLfloat value) const {
             //TODO: (Req 6) Complete this function
             glSamplerParameterf(name, parameter, value);
+            //(GLfloat is a floating point type, so it can be used to set the "GL_TEXTURE_MAX_ANISOTROPY_EXT" parameter)
         }
 
         // This function sets a sampler paramter where the value is of type "GLfloat[4]"
         // This can be used to set the "GL_TEXTURE_BORDER_COLOR" parameter
         void set(GLenum parameter, glm::vec4 value) const {
             glSamplerParameterfv(name, parameter, &(value.r));
+            //(GLfloat[4] is a floating point type, so it can be used to set the "GL_TEXTURE_BORDER_COLOR" parameter)
+            // https://www.khronos.org/opengl/wiki/GLAPI/glSamplerParameter
         }
 
         // Given a json object, this function deserializes the sampler state

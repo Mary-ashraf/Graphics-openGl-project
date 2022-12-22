@@ -70,6 +70,7 @@ namespace our {
 
         void set(const std::string &uniform, glm::mat4 matrix) {
             //TODO: (Req 1) Send the given matrix 4x4 value to the given uniform
+            //(Uniform location, number of matrices, transpose, pointer to the beginning of matrix)
             glUniformMatrix4fv(getUniformLocation(uniform), 1, GL_FALSE, &matrix[0][0]);
         }
 

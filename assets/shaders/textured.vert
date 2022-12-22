@@ -17,7 +17,7 @@ void main(){
     //vs_out.color = color;
     //vs_out.tex_coord = tex_coord;
 
-    gl_Position = transform * vec4(position, 1.0);
+    gl_Position = transform * vec4(position, 1.0); // apply transformation mat to the vec
     vs_out.color = color;
     vs_out.tex_coord = tex_coord;
 }
