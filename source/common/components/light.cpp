@@ -1,36 +1,30 @@
-include "light.hpp"
+#include "light.hpp"
 #include "../ecs/entity.hpp"
+#include "../deserialize-utils.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-    namespace our
+namespace our
 {
 
     // Reads light parameters from the given json object
-    void LightComponent::deserialize(const nlohmann::json &data)
+    void LightComponent::deserialize(const nlohmann::json& data)
     {
         if (!data.is_object())
             return;
 
         std::string lightTypeStr = data.value("lightType", "directional");
-
-        switch (lightTypeStr)
-        {
-        case "point" lightType = LightType::POINT;
-            break;
-            case "directional" lightType = LightType::DIRECTIONAL;
-            break;
-            case "spot" lightType = LightType::SPOT;
-            break;
-
-            default:
+        if(lightTypeStr == "spot"){
+            lightType = LightType::SPOT;
+        } else if(lightTypeStr == "point"){
+            lightType = LightType::POINT;
+        } else {
             lightType = LightType::DIRECTIONAL;
-            break;
         }
 
-        diffuse = data.value("diffuse", glm::vec3(1, 1, 1));
-        specular = data.value("specular", glm::vec3(1, 1, 1));
-        ambient = data.value("ambient", glm::vec3(1, 1, 1));
+        diffuse = data.value("diffuse", glm::vec3(1.0f));
+        specular = data.value("specular", glm::vec3(1.0f));  
+        ambient = data.value("ambient", glm::vec3(1.0f));
 
         attenuation_constant = data.value("attenuation_constant", 1.0f);
         attenuation_linear = data.value("attenuation_linear", 1.0f);
