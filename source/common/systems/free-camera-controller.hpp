@@ -90,14 +90,46 @@ namespace our
 
             // We change the camera position based on the keys WASD/QE
             // S & W moves the player back and forth
-            if(app->getKeyboard().isPressed(GLFW_KEY_W)) position += front * (deltaTime * current_sensitivity.z);
-            if(app->getKeyboard().isPressed(GLFW_KEY_S)) position -= front * (deltaTime * current_sensitivity.z);
-            // Q & E moves the player up and down
-            if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += up * (deltaTime * current_sensitivity.y);
-            if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= up * (deltaTime * current_sensitivity.y);
+            // if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += front * (deltaTime * current_sensitivity.z);
+            // if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= front * (deltaTime * current_sensitivity.z);
+
+            if(position.z > 1 || (position.z < 0 && position.z > -6) || position.z < -7) 
+            {
+                position += front * (deltaTime * current_sensitivity.z);
+            }
+            else if(position.z <= 1 && position.z >0)
+            {
+                if(position.x > -5 && position.x < -2 && position.y <1)
+                {
+                    position += front * (deltaTime * current_sensitivity.z);
+                }
+            }
+            else 
+            {
+                if(position.x > -7 && position.x < -4 && position.y > 3.4 && position.y < 5)
+                {
+                    position += front * (deltaTime * current_sensitivity.z);
+                }
+            }
+
+            // W & S moves the player up and down
+            if(app->getKeyboard().isPressed(GLFW_KEY_W) && position.y <9)
+            {
+                position += up * (deltaTime * current_sensitivity.y);
+            }
+            if(app->getKeyboard().isPressed(GLFW_KEY_S) && position.y > -0.5)
+            {
+                position -= up * (deltaTime * current_sensitivity.y);
+            }
             // A & D moves the player left or right 
-            if(app->getKeyboard().isPressed(GLFW_KEY_D)) position += right * (deltaTime * current_sensitivity.x);
-            if(app->getKeyboard().isPressed(GLFW_KEY_A)) position -= right * (deltaTime * current_sensitivity.x);
+            if(app->getKeyboard().isPressed(GLFW_KEY_D) && position.x <8)
+            {
+                position += right * (deltaTime * current_sensitivity.x);
+            }
+            if(app->getKeyboard().isPressed(GLFW_KEY_A) && position.x >-15) 
+            {
+                position -= right * (deltaTime * current_sensitivity.x);
+            }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked
