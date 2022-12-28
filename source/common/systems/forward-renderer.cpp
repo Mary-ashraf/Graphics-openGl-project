@@ -143,6 +143,9 @@ namespace our {
                     opaqueCommands.push_back(command);
                 }
             }
+            if(auto light = entity->getComponent<LightComponent>(); light){
+                lights.push_back(light);
+            }
         }
 
         // If there is no camera, we return (we cannot render without a camera)
@@ -191,6 +194,7 @@ namespace our {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
             opaqueCommands[i].material->shader->set("transform", VP* opaqueCommands[i].localToWorld);  
+            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
             opaqueCommands[i].mesh->draw();
         }
 
@@ -227,7 +231,8 @@ namespace our {
         {
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
-            transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);  
+            transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
+            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/  
             transparentCommands[i].mesh->draw();
         }
 
