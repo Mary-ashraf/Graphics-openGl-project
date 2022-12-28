@@ -157,7 +157,7 @@
                 "children": [
                     {
                         "position": [0, 0, -0.2],
-                        "rotation": [-150, 0, 0],
+                        "rotation": [-150, 0, 180],
                         "scale": [0.005, 0.005, 0.005],
                         "components": [
                             {
