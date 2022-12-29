@@ -20,7 +20,6 @@ namespace our
     class FreeCameraControllerSystem {
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
-
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application* app){
@@ -40,7 +39,7 @@ namespace our
             }
             // If there is no entity with both a CameraComponent and a FreeCameraControllerComponent, we can do nothing so we return
             if(!(camera && controller)) return;
-            // Get the entity that we found via getOwner of camera (we could use controller->getOwner())
+            // Get the entity that we found via getowner of camera (we could use controller->getOwner())
             Entity* entity = camera->getOwner();
 
             // If the left mouse button is pressed, we lock and hide the mouse. This common in First Person Games.
@@ -59,11 +58,11 @@ namespace our
 
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
-            if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
-                glm::vec2 delta = app->getMouse().getMouseDelta();
-                rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
-                rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
-            }
+            // if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
+            //     glm::vec2 delta = app->getMouse().getMouseDelta();
+            //     rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
+            //     rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
+            // }
 
             // We prevent the pitch from exceeding a certain angle from the XZ plane to prevent gimbal locks
             if(rotation.x < -glm::half_pi<float>() * 0.99f) rotation.x = -glm::half_pi<float>() * 0.99f;
@@ -73,9 +72,9 @@ namespace our
             rotation.y = glm::wrapAngle(rotation.y);
 
             // We update the camera fov based on the mouse wheel scrolling amount
-            float fov = camera->fovY + app->getMouse().getScrollOffset().y * controller->fovSensitivity;
-            fov = glm::clamp(fov, glm::pi<float>() * 0.01f, glm::pi<float>() * 0.99f); // We keep the fov in the range 0.01*PI to 0.99*PI
-            camera->fovY = fov;
+            // float fov = camera->fovY + app->getMouse().getScrollOffset().y * controller->fovSensitivity;
+            // fov = glm::clamp(fov, glm::pi<float>() * 0.01f, glm::pi<float>() * 0.99f); // We keep the fov in the range 0.01*PI to 0.99*PI
+            // camera->fovY = fov;
 
             // We get the camera model matrix (relative to its parent) to compute the front, up and right directions
             glm::mat4 matrix = entity->localTransform.toMat4();
@@ -93,7 +92,7 @@ namespace our
             // if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += front * (deltaTime * current_sensitivity.z);
             // if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= front * (deltaTime * current_sensitivity.z);
 
-            if(position.z > 1 || (position.z < 0 && position.z > -6) || position.z < -7) 
+            if(position.z > 1 || (position.z < 0 && position.z > -6) || (position.z < -7 && position.z > -13) || position.z < -14) 
             {
                 position += front * (deltaTime * current_sensitivity.z);
             }
@@ -103,13 +102,36 @@ namespace our
                 {
                     position += front * (deltaTime * current_sensitivity.z);
                 }
+                else
+                {
+                    app->changeState("play");
+                }
             }
-            else 
+            else if(position.z <= -6 && position.z >-7)
             {
-                if(position.x > -7 && position.x < -4 && position.y > 3.4 && position.y < 5)
+                if(position.x > -7 && position.x < -4 && position.y > 3 && position.y < 5)
                 {
                     position += front * (deltaTime * current_sensitivity.z);
                 }
+                else
+                {
+                    app->changeState("lose");
+                }
+            }
+            else
+            {
+                if(position.x > -4 && position.x < -1 && position.y <1)
+                {
+                    position += front * (deltaTime * current_sensitivity.z);
+                }
+                else
+                {
+                    app->changeState("lose");
+                }
+            }
+            if(position.z < -19)
+            {
+               app->changeState("win");
             }
 
             // W & S moves the player up and down

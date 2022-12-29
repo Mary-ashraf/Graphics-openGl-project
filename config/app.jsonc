@@ -281,6 +281,78 @@
                         "material": "glass"
                     }
                 ]
+            },
+            {
+                "position": [4, -1, -14],
+                "rotation": [0, 0, 0],
+                "scale": [5, 10, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
+            },
+            {
+                "position": [-8, -1, -14],
+                "rotation": [0, 0, 0],
+                "scale": [4, 10, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
+            },
+            {
+                "position": [-2.5, 5, -14],
+                "rotation": [0, 0, 0],
+                "scale": [1.7, 4, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
+            },
+            {
+                "position": [-12, -1, -11],
+                "rotation": [0, -90, 0],
+                "scale": [4, 10, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
+            },
+            {
+                "position": [6, -1, -11],
+                "rotation": [0, -90, 0],
+                "scale": [4, 10, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
+            },
+            {
+                "position": [-2, 9, -11],
+                "rotation": [-90, 0, 0],
+                "scale": [10, 10, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "moon"
+                    }
+                ]
             }
             //,
             // {
