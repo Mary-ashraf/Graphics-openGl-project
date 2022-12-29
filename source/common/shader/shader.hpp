@@ -73,6 +73,7 @@ namespace our {
             //(Uniform location, number of matrices, transpose, pointer to the beginning of matrix)
             glUniformMatrix4fv(getUniformLocation(uniform), 1, GL_FALSE, &matrix[0][0]);
         }
+        //void set(const)
 
         //TODO: (Req 1) Delete the copy constructor and assignment operator.
         ShaderProgram(const ShaderProgram&) = delete;

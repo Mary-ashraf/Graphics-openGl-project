@@ -30,6 +30,11 @@ namespace our {
         Material::setup();
 
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        // shader->set("diffuse", diffuse);
+        // shader->set("specular", specular);
+        // shader->set("ambient", ambient);
+        // shader->set("emissive", emissive);
+        // shader->set("shininess", shininess);
     }
 
     void LitMaterial::deserialize(const nlohmann::json& data)

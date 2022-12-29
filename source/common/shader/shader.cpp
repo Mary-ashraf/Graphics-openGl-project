@@ -4,6 +4,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+// // Since GLSL doesn't support "#include" preprocessors, we use a library to do it for us called "stb_include"
+// #define STB_INCLUDE_LINE_GLSL
+// #define STB_INCLUDE_IMPLEMENTATION
+// #include <stb/stb_include.h>
 
 //Forward definition for error checking functions
 std::string checkForShaderCompilationErrors(GLuint shader);
