@@ -25,6 +25,7 @@ namespace our
         diffuse = data.value("diffuse", glm::vec3(1.0f));
         specular = data.value("specular", glm::vec3(1.0f));  
         ambient = data.value("ambient", glm::vec3(1.0f));
+        emissive = data.value("emissive", glm::vec3(1.0f));
 
         attenuation_constant = data.value("attenuation_constant", 1.0f);
         attenuation_linear = data.value("attenuation_linear", 1.0f);

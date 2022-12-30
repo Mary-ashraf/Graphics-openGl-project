@@ -96,7 +96,7 @@ void main(){
       vec3 ambient = material.ambient * light.ambient;
       vec3 emissive = material.emissive * light.emissive;
       accumulated_light += (diffuse + specular + emissive) * attenuation + ambient;
-      //accumulated_light = texture(tex_material.emissive_map, fsin.tex_coord).rgb;
+      //accumulated_light = material.specular;
       //accumulated_light += (diffuse + specular) * attenuation + ambient + emissive;
    }
    frag_color = fsin.color * vec4(accumulated_light, 1.0f);

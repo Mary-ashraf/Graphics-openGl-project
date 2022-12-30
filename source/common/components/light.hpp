@@ -21,6 +21,7 @@ namespace our {
         glm::vec3 diffuse;
         glm::vec3 specular;
         glm::vec3 ambient;
+        glm::vec3 emissive;
 
         float attenuation_constant;
         float attenuation_linear;

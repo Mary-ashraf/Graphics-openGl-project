@@ -103,10 +103,13 @@ namespace our
         // TODO: (Req 7) Write this function
         TintedMaterial::setup();                       // call the setup of its parent
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
+        glActiveTexture(GL_TEXTURE0);
         if (texture)
             texture->bind(); // check if the texture is not null then bind it
+        else Texture2D::unbind();
         if (sampler)
             sampler->bind(0);  // check if sampler is not null then bind it
+        else sampler->unbind(0);
         shader->set("tex", 0); // send the unit number to the uniform variable "tex"
     }
 
@@ -130,46 +133,76 @@ namespace our
         shader->set("tex_material.specular_tint", glm::vec3(specular_tint.r, specular_tint.g, specular_tint.b));
         shader->set("tex_material.emissive_tint", glm::vec3(emissive_tint.r, emissive_tint.g, emissive_tint.b));
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
+        glActiveTexture(GL_TEXTURE0);
         if (albedo_map)
         {
-            glActiveTexture(GL_TEXTURE0);
             albedo_map->bind(); // check if the texture is not null then bind it
-            if (albedo_sampler)
-                albedo_sampler->bind(0); // check if sampler is not null then bind it
-            shader->set("tex_material.albedo_map", 0);
         }
+        else
+        {
+            Texture2D::unbind();        
+        }
+        if (albedo_sampler)
+        {
+            albedo_sampler->bind(0); // check if sampler is not null then bind it
+        }
+        else
+        {
+            albedo_sampler->unbind(0);
+        }
+        shader->set("tex_material.albedo_map", 0);
+        glActiveTexture(GL_TEXTURE0 + 1);
         if (specular_map)
         {
-            glActiveTexture(GL_TEXTURE0 + 1);
             specular_map->bind(); // check if the texture is not null then bind it
-            if (specular_sampler)
-                specular_sampler->bind(1); // check if sampler is not null then bind it
-            shader->set("tex_material.specular_map", 1);
         }
+        else
+        {
+            Texture2D::unbind();
+        }
+        if (specular_sampler)
+        {
+            specular_sampler->bind(1); // check if sampler is not null then bind it
+        }
+        else
+        {
+            specular_sampler->unbind(1);
+        }
+        shader->set("tex_material.specular_map", 1);
+        
+        glActiveTexture(GL_TEXTURE0 + 2);
         if (ambient_occlusion_map)
         {
-            glActiveTexture(GL_TEXTURE0 + 2);
             ambient_occlusion_map->bind(); // check if the texture is not null then bind it
-            if (ambient_occlusion_sampler)
-                ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
-            shader->set("tex_material.ambient_occlusion_map", 2);
         }
+        else
+        {
+            Texture2D::unbind();
+        }
+        if (ambient_occlusion_sampler)
+            ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
+        else ambient_occlusion_sampler->unbind(2);
+        shader->set("tex_material.ambient_occlusion_map", 2);
+        glActiveTexture(GL_TEXTURE0 + 3);
         if (roughness_map)
         {
-            glActiveTexture(GL_TEXTURE0 + 3);
             roughness_map->bind(); // check if the texture is not null then bind it
-            if (roughness_sampler)
-                roughness_sampler->bind(3); // check if sampler is not null then bind it
-            shader->set("tex_material.roughness_map", 3);
         }
+        else Texture2D::unbind();
+        if (roughness_sampler)
+            roughness_sampler->bind(3); // check if sampler is not null then bind it
+        else roughness_sampler->unbind(3);
+        shader->set("tex_material.roughness_map", 3);
+        glActiveTexture(GL_TEXTURE0 + 4);
         if (emissive_map)
         {
-            glActiveTexture(GL_TEXTURE0 + 4);
             emissive_map->bind(); // check if the texture is not null then bind it
-            if (emissive_sampler)
-                emissive_sampler->bind(4); // check if sampler is not null then bind it
-            shader->set("tex_material.emissive_map", 4);
         }
+        else Texture2D::unbind();
+        if (emissive_sampler)
+            emissive_sampler->bind(4); // check if sampler is not null then bind it
+        else emissive_sampler->unbind(4);
+        shader->set("tex_material.emissive_map", 4);
         /*shader->set("material.diffuse", );
         shader->set("material.specular", specular);
         shader->set("material.ambient", ambient);

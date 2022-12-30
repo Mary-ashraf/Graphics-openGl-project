@@ -217,6 +217,7 @@ namespace our
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "diffuse", lights[j]->diffuse);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "specular", lights[j]->specular);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "ambient", lights[j]->ambient);
+                opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "emissive", lights[j]->emissive);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "type", static_cast<int>(lights[j]->lightType));
 
                 switch (lights[j]->lightType)
@@ -244,6 +245,7 @@ namespace our
             opaqueCommands[i].material->shader->set("light_count", (GLint)lights.size());
             //opaqueCommands[i].material->shader->set("light_count", 1);
             opaqueCommands[i].mesh->draw();
+            //Texture2D::unbind();
         }
 
         // If there is a sky material, draw the sky

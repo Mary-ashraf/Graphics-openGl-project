@@ -11,8 +11,8 @@
     },
     "scene": {
         "renderer":{
-            //"sky": "assets/textures/sky.jpg",
-            //"postprocess": "assets/shaders/postprocess/vignette.frag"
+            "sky": "assets/textures/sky.jpg",
+            "postprocess": "assets/shaders/postprocess/vignette.frag"
         },
         "assets":{
             "shaders":{
@@ -44,7 +44,10 @@
                 "roughness": "assets/materials/roughness.jpg",
                 "specular": "assets/materials/specular.jpg",
                 "ambient_occlusion": "assets/materials/ambient_occlusion.jpg",
-                "emissive": "assets/materials/emissive.jpg"
+                "emissive": "assets/materials/emissive.jpg",
+                "specular_black": "assets/materials/specular_black.jpg",
+                "albedo_black": "assets/materials/albedo_black.jpg",
+                "roughness_black": "assets/materials/roughness_black.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -140,9 +143,9 @@
                     "sampler": "default",
                     "ambient": [0, 1, 1, 1],
                     "shininess": 1.0,
-                    "albedo_map": "albedo",
+                    "albedo_map": "albedo_black",
                     "roughness_map": "roughness",
-                    "specular_map": "specular",
+                    "specular_map": "specular_black",
                     "albedo_sampler": "default",
                     "roughness_sampler": "default",
                     "specular_sampler": "default",
