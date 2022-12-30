@@ -3,6 +3,7 @@
 #include "../ecs/world.hpp"
 #include "../components/camera.hpp"
 #include "../components/free-camera-controller.hpp"
+#include "../components/Collision.hpp"
 
 #include "../application.hpp"
 
@@ -20,6 +21,7 @@ namespace our
     class FreeCameraControllerSystem {
         Application* app; // The application in which the state runs
         bool mouse_locked = false; // Is the mouse locked
+
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application* app){
@@ -32,11 +34,33 @@ namespace our
             // As soon as we find one, we break
             CameraComponent* camera = nullptr;
             FreeCameraControllerComponent *controller = nullptr;
+            // for(auto entity : world->getEntities()){
+            //     camera = entity->getComponent<CameraComponent>();
+            //     controller = entity->getComponent<FreeCameraControllerComponent>();
+            //     if(camera && controller) break;
+            // }
+            std::vector<CollisionBoundary> Walls;
+            glm::vec2& x_Boundary = glm::vec2(1.0f);
+            glm::vec2& y_Boundary = glm::vec2(1.0f);
+            glm::vec2& z_Boundary = glm::vec2(1.0f);
+
+            glm::vec3& position1 = glm::vec3(1.0f);
+            int WallsNumber;
             for(auto entity : world->getEntities()){
-                camera = entity->getComponent<CameraComponent>();
-                controller = entity->getComponent<FreeCameraControllerComponent>();
-                if(camera && controller) break;
+            // If we hadn't found a camera yet, we look for a camera in this entity
+            if(!camera) camera = entity->getComponent<CameraComponent>();
+            if(!controller) controller = entity->getComponent<FreeCameraControllerComponent>();
+            // If this entity has a mesh renderer component
+            if(auto Collisions = entity->getComponent<CollisionComponent>(); Collisions){
+                x_Boundary = Collisions->x_Boundary;
+                y_Boundary = Collisions->y_Boundary;
+                z_Boundary = Collisions->z_Boundary;
+                WallsNumber = Collisions->WallsNumber;
+                Walls = Collisions->Walls;                
             }
+        }
+            position1.x = Walls[1].x_Boundary.x;
+            position1.y = Walls[1].x_Boundary.y;
             // If there is no entity with both a CameraComponent and a FreeCameraControllerComponent, we can do nothing so we return
             if(!(camera && controller)) return;
             // Get the entity that we found via getowner of camera (we could use controller->getOwner())
@@ -55,7 +79,6 @@ namespace our
             // We get a reference to the entity's position and rotation
             glm::vec3& position = entity->localTransform.position;
             glm::vec3& rotation = entity->localTransform.rotation;
-
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
             // if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
@@ -92,63 +115,110 @@ namespace our
             // if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += front * (deltaTime * current_sensitivity.z);
             // if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= front * (deltaTime * current_sensitivity.z);
 
-            if(position.z > 1 || (position.z < 0 && position.z > -6) || (position.z < -7 && position.z > -13) || position.z < -14) 
-            {
-                position += front * (deltaTime * current_sensitivity.z);
-            }
-            else if(position.z <= 1 && position.z >0)
-            {
-                if(position.x > -5 && position.x < -2 && position.y <1)
+
+            // if(position.z > 1 || (position.z < 0 && position.z > -6) || (position.z < -7 && position.z > -13) || position.z < -14) 
+            // {
+            //     position += front * (deltaTime * current_sensitivity.z);
+            // }
+            // else if(position.z <= (Walls[0].z_position+1) && position.z >Walls[0].z_position)
+            // {
+            //     //First wall
+            //     if(position.x > Walls[0].x_Boundary.x && position.x < Walls[0].x_Boundary.y && position.y > Walls[0].y_Boundary.x && position.y < Walls[0].y_Boundary.y)
+            //     {
+            //         position += front * (deltaTime * current_sensitivity.z);
+            //     }
+            //     else
+            //     {
+            //         app->changeState("play");
+            //     }
+            // }
+            // else if(position.z <= (Walls[1].z_position+1) && position.z >Walls[1].z_position)
+            // {
+            //     if(position.x > Walls[1].x_Boundary.x && position.x < Walls[1].x_Boundary.y && position.y > Walls[1].y_Boundary.x && position.y < Walls[1].y_Boundary.y)
+            //     {
+            //         position += front * (deltaTime * current_sensitivity.z);
+            //     }
+            //     else
+            //     {
+            //         app->changeState("lose");
+            //     }
+            // }
+            // else
+            // {
+            //     if(position.x > -4 && position.x < -1 && position.y <1)
+            //     {
+            //         position += front * (deltaTime * current_sensitivity.z);
+            //     }
+            //     else
+            //     {
+            //         app->changeState("lose");
+            //     }
+            // }
+            // if(position.z < z_Boundary.y)
+            // {
+            //    app->changeState("win");
+            // }
+                if(WallsNumber == 3)
                 {
-                    position += front * (deltaTime * current_sensitivity.z);
+                    if(position.z <= (Walls[0].z_position+1) && position.z >Walls[0].z_position)
+                    {
+                        if(position.x > Walls[0].x_Boundary.x && position.x < Walls[0].x_Boundary.y && position.y > Walls[0].y_Boundary.x && position.y < Walls[0].y_Boundary.y)
+                        {
+                            position += front * (deltaTime * current_sensitivity.z);
+                        }
+                        else
+                        {
+                            app->changeState("play");
+                        }
+                    }
+                    else if(position.z <= (Walls[1].z_position+1) && position.z >Walls[1].z_position)
+                    {
+                        if(position.x > Walls[1].x_Boundary.x && position.x < Walls[1].x_Boundary.y && position.y > Walls[1].y_Boundary.x && position.y < Walls[1].y_Boundary.y)
+                        {
+                            position += front * (deltaTime * current_sensitivity.z);
+                        }
+                        else
+                        {
+                            app->changeState("lose");
+                        }
+                    }
+                    else if(position.z <= (Walls[2].z_position+1) && position.z >Walls[2].z_position)
+                    {
+                        if(position.x > Walls[2].x_Boundary.x && position.x < Walls[2].x_Boundary.y && position.y > Walls[2].y_Boundary.x && position.y < Walls[2].y_Boundary.y)
+                        {
+                            position += front * (deltaTime * current_sensitivity.z);
+                        }
+                        else
+                        {
+                            app->changeState("lose");
+                        }
+                    }
+                    else
+                    {
+                        position += front * (deltaTime * current_sensitivity.z);
+                    }
                 }
-                else
+                if(position.z < z_Boundary.y)
                 {
-                    app->changeState("play");
+                    app->changeState("win");
                 }
-            }
-            else if(position.z <= -6 && position.z >-7)
-            {
-                if(position.x > -7 && position.x < -4 && position.y > 3 && position.y < 5)
-                {
-                    position += front * (deltaTime * current_sensitivity.z);
-                }
-                else
-                {
-                    app->changeState("lose");
-                }
-            }
-            else
-            {
-                if(position.x > -4 && position.x < -1 && position.y <1)
-                {
-                    position += front * (deltaTime * current_sensitivity.z);
-                }
-                else
-                {
-                    app->changeState("lose");
-                }
-            }
-            if(position.z < -19)
-            {
-               app->changeState("win");
-            }
+                
 
             // W & S moves the player up and down
-            if(app->getKeyboard().isPressed(GLFW_KEY_W) && position.y <9)
+            if(app->getKeyboard().isPressed(GLFW_KEY_W) && position.y <y_Boundary.x)
             {
                 position += up * (deltaTime * current_sensitivity.y);
             }
-            if(app->getKeyboard().isPressed(GLFW_KEY_S) && position.y > -0.5)
+            if(app->getKeyboard().isPressed(GLFW_KEY_S) && position.y > y_Boundary.y)
             {
                 position -= up * (deltaTime * current_sensitivity.y);
             }
             // A & D moves the player left or right 
-            if(app->getKeyboard().isPressed(GLFW_KEY_D) && position.x <8)
+            if(app->getKeyboard().isPressed(GLFW_KEY_D) && position.x <x_Boundary.x)
             {
                 position += right * (deltaTime * current_sensitivity.x);
             }
-            if(app->getKeyboard().isPressed(GLFW_KEY_A) && position.x >-15) 
+            if(app->getKeyboard().isPressed(GLFW_KEY_A) && position.x >x_Boundary.y) 
             {
                 position -= right * (deltaTime * current_sensitivity.x);
             }
