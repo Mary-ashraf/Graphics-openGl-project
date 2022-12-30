@@ -2,7 +2,6 @@
 
 in Varyings {
    vec4 color;
-   vec2 tex_coord;
    vec3 world;
    vec3 view;
    vec3 normal;
@@ -29,13 +28,12 @@ struct Light {
    float inner_angle, outer_angle;
 };
 
-
 #define TYPE_POINT          0
 #define TYPE_DIRECTIONAL    1
 #define TYPE_SPOT           2
 #define MAX_LIGHT_COUNT     16
 
-uniform light lights[MAX_LIGHT_COUNT];
+uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
 uniform Material material;
 
@@ -81,5 +79,21 @@ void main(){
       //accumulated_light += (diffuse + specular) * attenuation + ambient + emissive;
    }
    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+   //frag_color = vec4(material.ambient, 1.0f);
+   
+   // switch(light_count){
+   //    case 0: 
+   //       frag_color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
+   //       break;
+   //    case 1:
+   //       frag_color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+   //       break;
+   //    case 2:
+   //       frag_color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+   //       break;
+   //    case -1:
+   //       frag_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+   //       break;
+   // }
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

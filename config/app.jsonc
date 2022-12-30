@@ -23,14 +23,28 @@
                 "textured":{
                     "vs":"assets/shaders/textured.vert",
                     "fs":"assets/shaders/textured.frag"
+                },
+                "litTextured":{
+                    "vs":"assets/shaders/lit_texture.vert",
+                    "fs":"assets/shaders/lit_texture.frag"
+                },
+                "litTinted":{
+                    "vs":"assets/shaders/lit_tinted.vert",
+                    "fs":"assets/shaders/lit_tinted.frag"
                 }
+
             },
             "textures":{
                 "moon": "assets/textures/moon.jpg",
                 "grass": "assets/textures/grass_ground_d.jpg",
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
-                "monkey": "assets/textures/monkey.png"
+                "monkey": "assets/textures/monkey.png",
+                "albedo": "assets/materials/albedo.jpg",
+                "roughness": "assets/materials/roughness.jpg",
+                "specular": "assets/materials/specular.jpg",
+                "ambient_occlusion": "assets/materials/ambient_occlusion.jpg",
+                "emissive": "assets/materials/emissive.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -111,8 +125,8 @@
                     "sampler": "default"
                 },
                 "moon":{
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "textured_lit",
+                    "shader": "litTextured",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -123,7 +137,19 @@
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
-                    "sampler": "default"
+                    "sampler": "default",
+                    "ambient": [0, 1, 1, 1],
+                    "shininess": 1.0,
+                    "albedo_map": "albedo",
+                    "roughness_map": "roughness",
+                    "specular_map": "specular",
+                    "albedo_sampler": "default",
+                    "roughness_sampler": "default",
+                    "specular_sampler": "default",
+                    "ambient_occlusion_map": "ambient_occlusion",
+                    "emissive_map": "emissive",
+                    "ambient_occlusion_sampler": "default",
+                    "emissive_sampler": "default"
                 }
             }
         },
@@ -150,6 +176,22 @@
                                 "material": "metal"
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "position": [0, 10,-8],
+                "rotation": [0, 0, 0],
+                "scale": [0.1, 0.1, 0.1],
+                "components": [
+                    {
+                        "type": "Light",
+                        "ambient": [1, 1, 1, 1]
+                    },
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "monkey",
+                        "material": "monkey"
                     }
                 ]
             },
