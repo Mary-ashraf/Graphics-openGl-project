@@ -74,26 +74,11 @@ void main(){
       vec3 diffuse = material.diffuse * light.diffuse * lambert;
       vec3 specular = material.specular * light.specular * phong;
       vec3 ambient = material.ambient * light.ambient;
-      vec3 emissive = material.emissive * light.emissive;
-      accumulated_light += (diffuse + specular + emissive) * attenuation + ambient;
-      //accumulated_light += (diffuse + specular) * attenuation + ambient + emissive;
+      //vec3 emissive = material.emissive * light.emissive;
+      //accumulated_light += (diffuse + specular + emissive) * attenuation + ambient;
+      accumulated_light += (diffuse + specular) * attenuation + ambient;
+      //accumulated_light = light_direction;
    }
    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
-   //frag_color = vec4(material.ambient, 1.0f);
-   
-   // switch(light_count){
-   //    case 0: 
-   //       frag_color = vec4(0.0f, 0.0f, 1.0f, 1.0f);
-   //       break;
-   //    case 1:
-   //       frag_color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-   //       break;
-   //    case 2:
-   //       frag_color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
-   //       break;
-   //    case -1:
-   //       frag_color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-   //       break;
-   // }
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

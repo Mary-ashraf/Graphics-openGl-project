@@ -16,10 +16,13 @@ namespace our
         std::string lightTypeStr = data.value("lightType", "directional");
         if(lightTypeStr == "spot"){
             lightType = LightType::SPOT;
+            printf("%d \n", LightType::SPOT);
         } else if(lightTypeStr == "point"){
             lightType = LightType::POINT;
+            printf("%d \n", LightType::POINT);
         } else {
             lightType = LightType::DIRECTIONAL;
+            printf("%d \n", LightType::DIRECTIONAL);
         }
 
         diffuse = data.value("diffuse", glm::vec3(1.0f));
@@ -27,11 +30,11 @@ namespace our
         ambient = data.value("ambient", glm::vec3(1.0f));
         emissive = data.value("emissive", glm::vec3(1.0f));
 
-        attenuation_constant = data.value("attenuation_constant", 1.0f);
-        attenuation_linear = data.value("attenuation_linear", 1.0f);
+        attenuation_constant = data.value("attenuation_constant", 0.0f);
+        attenuation_linear = data.value("attenuation_linear", 0.0f);
         attenuation_quadratic = data.value("attenuation_quadratic", 1.0f);
 
-        inner_angle = data.value("inner_angle", 10.0f);
-        outer_angle = data.value("outer_angle", 40.0f);
+        inner_angle = data.value("inner_angle", glm::quarter_pi<float>());
+        outer_angle = data.value("outer_angle", glm::half_pi<float>());
     }
 }

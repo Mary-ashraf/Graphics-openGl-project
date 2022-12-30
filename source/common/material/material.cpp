@@ -21,7 +21,6 @@ namespace our
     {
         if (!data.is_object())
             return;
-        printf("%s \n", "Material deserialized");
 
         if (data.contains("pipelineState"))
         {
@@ -43,7 +42,6 @@ namespace our
         Material::deserialize(data);
         if (!data.is_object())
             return;
-        printf("%s \n", "Lit material deserialized");
         diffuse = data.value("diffuse", glm::vec4(1.0f));
         specular = data.value("specular", glm::vec4(1.0f));
         ambient = data.value("ambient", glm::vec4(1.0f));
@@ -67,7 +65,6 @@ namespace our
         Material::deserialize(data);
         if (!data.is_object())
             return;
-        printf("%s \n", "tinted material deserialized");
         tint = data.value("tint", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
@@ -77,7 +74,6 @@ namespace our
         shader->set("material.diffuse", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
         shader->set("material.specular", glm::vec3(specular.r, specular.g, specular.b));
         shader->set("material.ambient", glm::vec3(ambient.r, ambient.g, ambient.b));
-        printf("%f, %f, %f, %f \n", ambient.r, ambient.g, ambient.b, ambient.a);
         shader->set("material.emissive", glm::vec3(emissive_tint.r, emissive_tint.g, emissive_tint.b));
         shader->set("material.shininess", shininess);
 
@@ -89,7 +85,6 @@ namespace our
         LitMaterial::deserialize(data);
         if (!data.is_object())
             return;
-        printf("%s \n", "Lit tinted material deserialized");
         albedo_tint = data.value("albedo_tint", glm::vec4(1.0f));
         specular_tint = data.value("specular_tint", glm::vec4(1.0f));
         emissive_tint = data.value("emissive_tint", glm::vec4(1.0f));
@@ -106,10 +101,12 @@ namespace our
         glActiveTexture(GL_TEXTURE0);
         if (texture)
             texture->bind(); // check if the texture is not null then bind it
-        else Texture2D::unbind();
+        else
+            Texture2D::unbind();
         if (sampler)
-            sampler->bind(0);  // check if sampler is not null then bind it
-        else sampler->unbind(0);
+            sampler->bind(0); // check if sampler is not null then bind it
+        else
+            sampler->unbind(0);
         shader->set("tex", 0); // send the unit number to the uniform variable "tex"
     }
 
@@ -119,7 +116,6 @@ namespace our
         TintedMaterial::deserialize(data);
         if (!data.is_object())
             return;
-        printf("%s \n", "textured material deserialized");
         alphaThreshold = data.value("alphaThreshold", 0.0f);
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
@@ -140,7 +136,7 @@ namespace our
         }
         else
         {
-            Texture2D::unbind();        
+            Texture2D::unbind();
         }
         if (albedo_sampler)
         {
@@ -169,7 +165,7 @@ namespace our
             specular_sampler->unbind(1);
         }
         shader->set("tex_material.specular_map", 1);
-        
+
         glActiveTexture(GL_TEXTURE0 + 2);
         if (ambient_occlusion_map)
         {
@@ -181,27 +177,32 @@ namespace our
         }
         if (ambient_occlusion_sampler)
             ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
-        else ambient_occlusion_sampler->unbind(2);
+        else
+            ambient_occlusion_sampler->unbind(2);
         shader->set("tex_material.ambient_occlusion_map", 2);
         glActiveTexture(GL_TEXTURE0 + 3);
         if (roughness_map)
         {
             roughness_map->bind(); // check if the texture is not null then bind it
         }
-        else Texture2D::unbind();
+        else
+            Texture2D::unbind();
         if (roughness_sampler)
             roughness_sampler->bind(3); // check if sampler is not null then bind it
-        else roughness_sampler->unbind(3);
+        else
+            roughness_sampler->unbind(3);
         shader->set("tex_material.roughness_map", 3);
         glActiveTexture(GL_TEXTURE0 + 4);
         if (emissive_map)
         {
             emissive_map->bind(); // check if the texture is not null then bind it
         }
-        else Texture2D::unbind();
+        else
+            Texture2D::unbind();
         if (emissive_sampler)
             emissive_sampler->bind(4); // check if sampler is not null then bind it
-        else emissive_sampler->unbind(4);
+        else
+            emissive_sampler->unbind(4);
         shader->set("tex_material.emissive_map", 4);
         /*shader->set("material.diffuse", );
         shader->set("material.specular", specular);
@@ -217,7 +218,6 @@ namespace our
         LitTintedMaterial::deserialize(data);
         if (!data.is_object())
             return;
-        printf("%s \n", "Lit textured material deserialized");
 
         albedo_map = AssetLoader<Texture2D>::get(data.value("albedo_map", ""));
         albedo_sampler = AssetLoader<Sampler>::get(data.value("albedo_sampler", ""));

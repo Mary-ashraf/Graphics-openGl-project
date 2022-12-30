@@ -11,8 +11,9 @@
     },
     "scene": {
         "renderer":{
-            "sky": "assets/textures/sky.jpg",
-            "postprocess": "assets/shaders/postprocess/vignette.frag"
+            "sky": "assets/textures/sky.jpg"
+            //"sky": "assets/textures/albedo_black.jpg"
+            //"postprocess": "assets/shaders/postprocess/vignette.frag"
         },
         "assets":{
             "shaders":{
@@ -128,8 +129,10 @@
                     "sampler": "default"
                 },
                 "moon":{
-                    "type": "textured_lit",
-                    "shader": "litTextured",
+                    "type": "tinted_lit",
+                    //"type": "textured_lit",
+                    "shader": "litTinted",
+                    //"shader": "litTextured",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -140,19 +143,19 @@
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
-                    "sampler": "default",
-                    "ambient": [0, 1, 1, 1],
-                    "shininess": 1.0,
-                    "albedo_map": "albedo_black",
-                    "roughness_map": "roughness",
-                    "specular_map": "specular_black",
-                    "albedo_sampler": "default",
-                    "roughness_sampler": "default",
-                    "specular_sampler": "default",
-                    "ambient_occlusion_map": "ambient_occlusion",
-                    "emissive_map": "emissive",
-                    "ambient_occlusion_sampler": "default",
-                    "emissive_sampler": "default"
+                    "ambient": [0, 0, 0, 1],
+                    "shininess": 0.5
+                    //"albedo_map": "albedo",
+                    //"roughness_map": "roughness",
+                    //"specular_map": "specular",
+                    //"albedo_sampler": "default",
+                    //"roughness_sampler": "default",
+                    //"specular_sampler": "default"
+                    //"ambient_occlusion_map": "ambient_occlusion",
+                    //"emissive_map": "emissive",
+                    //"ambient_occlusion_sampler": "default",
+                    //"sampler": "default",
+                    //"emissive_sampler": "default"
                 }
             }
         },
@@ -184,12 +187,15 @@
             },
             {
                 "position": [0, 10,-8],
-                "rotation": [0, 0, 0],
-                "scale": [0.1, 0.1, 0.1],
+                "rotation": [-90, -45, 45],
+                "scale": [0.2, 0.2, 0.2],
                 "components": [
                     {
                         "type": "Light",
-                        "ambient": [1, 1, 1, 1]
+                        "ambient": [1, 1, 1, 1],
+                        "lightType": "directional"
+                        //"lightType": "point"
+                        //"lightType": "spot"
                     },
                     {
                         "type": "Mesh Renderer",
@@ -206,12 +212,12 @@
                         "type": "Mesh Renderer",
                         "mesh": "monkey",
                         "material": "monkey"
-                    },
-                    {
-                        "type": "Movement",
-                        "linearVelocity": [0, 0.1, 0],
-                        "angularVelocity": [0, 45, 0]
                     }
+                    // {
+                    //     "type": "Movement",
+                    //     "linearVelocity": [0, 0.1, 0],
+                    //     "angularVelocity": [0, 45, 0]
+                    // }
                 ]
             },
             {
@@ -295,11 +301,11 @@
                         "type": "Mesh Renderer",
                         "mesh": "sphere",
                         "material": "moon"
-                    },
-                    {
-                        "type": "Movement",
-                        "angularVelocity": [0, 90, 0]
                     }
+                    // {
+                    //     "type": "Movement",
+                    //     "angularVelocity": [0, 90, 0]
+                    // }
                 ]
             }
         ]

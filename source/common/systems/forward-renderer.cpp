@@ -206,11 +206,18 @@ namespace our
 
         // TODO: (Req 9) Draw all the opaque commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render
+        // TODO: (Req 10) Get the camera position
+        glm::vec3 cameraPosition = glm::vec3(VM[3][0], VM[3][1], VM[3][2]); // 4th row
         for (unsigned long int i = 0; i < opaqueCommands.size(); i++)
         {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
             opaqueCommands[i].material->shader->set("transform", VP * opaqueCommands[i].localToWorld);
+            opaqueCommands[i].material->shader->set("view_projection", VP);
+            opaqueCommands[i].material->shader->set("objectToWorld", opaqueCommands[i].localToWorld);
+            opaqueCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(opaqueCommands[i].localToWorld)));
+            opaqueCommands[i].material->shader->set("cameraPosition", cameraPosition);
+
             /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
             for (int j = 0; j < lights.size(); j++)
             {
@@ -224,6 +231,7 @@ namespace our
                 {
                 case LightType::DIRECTIONAL:
                     opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "direction", glm::normalize(lights[j]->getOwner()->localTransform.rotation));
+                    printf("Light rotation: %f, %f, %f \n", lights[j]->getOwner()->localTransform.rotation.x, lights[j]->getOwner()->localTransform.rotation.y, lights[j]->getOwner()->localTransform.rotation.z);
                     break;
                 case LightType::POINT:
                     opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "position", lights[j]->getOwner()->localTransform.position);
@@ -243,9 +251,7 @@ namespace our
                 }
             }
             opaqueCommands[i].material->shader->set("light_count", (GLint)lights.size());
-            //opaqueCommands[i].material->shader->set("light_count", 1);
             opaqueCommands[i].mesh->draw();
-            //Texture2D::unbind();
         }
 
         // If there is a sky material, draw the sky
@@ -253,8 +259,6 @@ namespace our
         {
             // TODO: (Req 10) setup the sky material
             skyMaterial->setup();
-            // TODO: (Req 10) Get the camera position
-            glm::vec3 cameraPosition = glm::vec3(VM[3][0], VM[3][1], VM[3][2]); // 4th row
             // TODO: (Req 10) Create a model matrix for the sky such that it always follows the camera (sky sphere center = camera position)
             glm::mat4 view = glm::mat4(1.0f);
             view[0][3] = cameraPosition[0];
@@ -281,6 +285,10 @@ namespace our
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
             transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
+            transparentCommands[i].material->shader->set("view_projection", VP);
+            transparentCommands[i].material->shader->set("objectToWorld", transparentCommands[i].localToWorld);
+            transparentCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(transparentCommands[i].localToWorld)));
+            transparentCommands[i].material->shader->set("cameraPosition", cameraPosition);
             /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
             for (int j = 0; j < lights.size(); j++)
             {
