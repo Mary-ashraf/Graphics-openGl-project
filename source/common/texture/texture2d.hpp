@@ -36,8 +36,8 @@ namespace our {
 
         /*void bind(GLuint passedname)
         {
-            glActiveTexture(name + passedname);
-            glBindTexture(GL_TEXTURE_2D, passedname);
+            glActiveTexture(GL_TEXTURE0 + passedname);
+            glBindTexture(GL_TEXTURE_2D, name);
         }*/
 
         // This static method ensures that no texture is bound to GL_TEXTURE_2D

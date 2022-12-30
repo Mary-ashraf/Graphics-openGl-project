@@ -5,38 +5,44 @@
 
 #include <glm/vec2.hpp>
 
-namespace our {
+namespace our
+{
 
     // This function should setup the pipeline state and set the shader to be used
-    void Material::setup() const {
-        //TODO: (Req 7) Write this function
+    void Material::setup() const
+    {
+        // TODO: (Req 7) Write this function
         pipelineState.setup(); // setup the pipline
-        shader->use(); // to use the shader
+        shader->use();         // to use the shader
     }
 
     // This function read the material data from a json object
-    void Material::deserialize(const nlohmann::json& data){
-        if(!data.is_object()) return;
+    void Material::deserialize(const nlohmann::json &data)
+    {
+        if (!data.is_object())
+            return;
         printf("%s \n", "Material deserialized");
 
-        if(data.contains("pipelineState")){
+        if (data.contains("pipelineState"))
+        {
             pipelineState.deserialize(data["pipelineState"]);
         }
         shader = AssetLoader<ShaderProgram>::get(data["shader"].get<std::string>());
         transparent = data.value("transparent", false);
     }
 
-    void LitMaterial::setup() const 
+    void LitMaterial::setup() const
     {
         Material::setup();
 
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
 
-    void LitMaterial::deserialize(const nlohmann::json& data)
+    void LitMaterial::deserialize(const nlohmann::json &data)
     {
         Material::deserialize(data);
-        if(!data.is_object()) return;
+        if (!data.is_object())
+            return;
         printf("%s \n", "Lit material deserialized");
         diffuse = data.value("diffuse", glm::vec4(1.0f));
         specular = data.value("specular", glm::vec4(1.0f));
@@ -47,22 +53,25 @@ namespace our {
     }
 
     // This function should call the setup of its parent and
-    // set the "tint" uniform to the value in the member variable tint 
-    void TintedMaterial::setup() const {
-        //TODO: (Req 7) Write this function
-        Material::setup(); //call the setup of its parent 
-        shader->set("tint", tint); //set the tint
+    // set the "tint" uniform to the value in the member variable tint
+    void TintedMaterial::setup() const
+    {
+        // TODO: (Req 7) Write this function
+        Material::setup();         // call the setup of its parent
+        shader->set("tint", tint); // set the tint
     }
 
     // This function read the material data from a json object
-    void TintedMaterial::deserialize(const nlohmann::json& data){
+    void TintedMaterial::deserialize(const nlohmann::json &data)
+    {
         Material::deserialize(data);
-        if(!data.is_object()) return;
+        if (!data.is_object())
+            return;
         printf("%s \n", "tinted material deserialized");
         tint = data.value("tint", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
-    void LitTintedMaterial::setup() const 
+    void LitTintedMaterial::setup() const
     {
         LitMaterial::setup();
         shader->set("material.diffuse", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
@@ -73,13 +82,13 @@ namespace our {
         shader->set("material.shininess", shininess);
 
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
-
     }
 
-    void LitTintedMaterial::deserialize(const nlohmann::json& data)
+    void LitTintedMaterial::deserialize(const nlohmann::json &data)
     {
         LitMaterial::deserialize(data);
-        if(!data.is_object()) return;
+        if (!data.is_object())
+            return;
         printf("%s \n", "Lit tinted material deserialized");
         albedo_tint = data.value("albedo_tint", glm::vec4(1.0f));
         specular_tint = data.value("specular_tint", glm::vec4(1.0f));
@@ -88,28 +97,32 @@ namespace our {
 
     // This function should call the setup of its parent and
     // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
-    // Then it should bind the texture and sampler to a texture unit and send the unit number to the uniform variable "tex" 
-    void TexturedMaterial::setup() const {
-        //TODO: (Req 7) Write this function
-        TintedMaterial::setup(); // call the setup of its parent
+    // Then it should bind the texture and sampler to a texture unit and send the unit number to the uniform variable "tex"
+    void TexturedMaterial::setup() const
+    {
+        // TODO: (Req 7) Write this function
+        TintedMaterial::setup();                       // call the setup of its parent
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
-        if (texture) texture->bind(); // check if the texture is not null then bind it 
-        if (sampler) sampler->bind(0); // check if sampler is not null then bind it
-        shader->set("tex", 0); // send the unit number to the uniform variable "tex" 
-    
+        if (texture)
+            texture->bind(); // check if the texture is not null then bind it
+        if (sampler)
+            sampler->bind(0);  // check if sampler is not null then bind it
+        shader->set("tex", 0); // send the unit number to the uniform variable "tex"
     }
 
     // This function read the material data from a json object
-    void TexturedMaterial::deserialize(const nlohmann::json& data){
+    void TexturedMaterial::deserialize(const nlohmann::json &data)
+    {
         TintedMaterial::deserialize(data);
-        if(!data.is_object()) return;
+        if (!data.is_object())
+            return;
         printf("%s \n", "textured material deserialized");
         alphaThreshold = data.value("alphaThreshold", 0.0f);
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
     }
 
-    void LitTexturedMaterial::setup() const 
+    void LitTexturedMaterial::setup() const
     {
         LitTintedMaterial::setup();
         shader->set("tex_material.roughness_range", roughness_range);
@@ -117,21 +130,46 @@ namespace our {
         shader->set("tex_material.specular_tint", glm::vec3(specular_tint.r, specular_tint.g, specular_tint.b));
         shader->set("tex_material.emissive_tint", glm::vec3(emissive_tint.r, emissive_tint.g, emissive_tint.b));
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
-        if (albedo_map) albedo_map->bind(); // check if the texture is not null then bind it 
-        if (albedo_sampler) albedo_sampler->bind(0); // check if sampler is not null then bind it
-        shader->set("tex_material.albedo_map", 0);
-        if (specular_map) specular_map->bind(); // check if the texture is not null then bind it 
-        if (specular_sampler) specular_sampler->bind(1); // check if sampler is not null then bind it
-        shader->set("tex_material.specular_map", 1);
-        if (ambient_occlusion_map) ambient_occlusion_map->bind(); // check if the texture is not null then bind it 
-        if (ambient_occlusion_sampler) ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
-        shader->set("tex_material.ambient_occlusion_map", 2);
-        if (roughness_map) roughness_map->bind(); // check if the texture is not null then bind it 
-        if (roughness_sampler) roughness_sampler->bind(3); // check if sampler is not null then bind it
-        shader->set("tex_material.roughness_map", 3);
-        if (emissive_map) emissive_map->bind(); // check if the texture is not null then bind it 
-        if (emissive_sampler) emissive_sampler->bind(4); // check if sampler is not null then bind it
-        shader->set("tex_material.emissive_map", 4);
+        if (albedo_map)
+        {
+            glActiveTexture(GL_TEXTURE0);
+            albedo_map->bind(); // check if the texture is not null then bind it
+            if (albedo_sampler)
+                albedo_sampler->bind(0); // check if sampler is not null then bind it
+            shader->set("tex_material.albedo_map", 0);
+        }
+        if (specular_map)
+        {
+            glActiveTexture(GL_TEXTURE0 + 1);
+            specular_map->bind(); // check if the texture is not null then bind it
+            if (specular_sampler)
+                specular_sampler->bind(1); // check if sampler is not null then bind it
+            shader->set("tex_material.specular_map", 1);
+        }
+        if (ambient_occlusion_map)
+        {
+            glActiveTexture(GL_TEXTURE0 + 2);
+            ambient_occlusion_map->bind(); // check if the texture is not null then bind it
+            if (ambient_occlusion_sampler)
+                ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
+            shader->set("tex_material.ambient_occlusion_map", 2);
+        }
+        if (roughness_map)
+        {
+            glActiveTexture(GL_TEXTURE0 + 3);
+            roughness_map->bind(); // check if the texture is not null then bind it
+            if (roughness_sampler)
+                roughness_sampler->bind(3); // check if sampler is not null then bind it
+            shader->set("tex_material.roughness_map", 3);
+        }
+        if (emissive_map)
+        {
+            glActiveTexture(GL_TEXTURE0 + 4);
+            emissive_map->bind(); // check if the texture is not null then bind it
+            if (emissive_sampler)
+                emissive_sampler->bind(4); // check if sampler is not null then bind it
+            shader->set("tex_material.emissive_map", 4);
+        }
         /*shader->set("material.diffuse", );
         shader->set("material.specular", specular);
         shader->set("material.ambient", ambient);
@@ -141,10 +179,11 @@ namespace our {
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
 
-    void LitTexturedMaterial::deserialize(const nlohmann::json& data)
+    void LitTexturedMaterial::deserialize(const nlohmann::json &data)
     {
         LitTintedMaterial::deserialize(data);
-        if(!data.is_object()) return;
+        if (!data.is_object())
+            return;
         printf("%s \n", "Lit textured material deserialized");
 
         albedo_map = AssetLoader<Texture2D>::get(data.value("albedo_map", ""));
@@ -153,9 +192,9 @@ namespace our {
         specular_sampler = AssetLoader<Sampler>::get(data.value("specular_sampler", ""));
         roughness_map = AssetLoader<Texture2D>::get(data.value("roughness_map", ""));
         roughness_sampler = AssetLoader<Sampler>::get(data.value("roughness_sampler", ""));
-        roughness_range = data.value("roughness_range", glm::vec2(0.0f, 1.0f)); 
+        roughness_range = data.value("roughness_range", glm::vec2(0.0f, 1.0f));
         ambient_occlusion_map = AssetLoader<Texture2D>::get(data.value("ambient_occlusion_map", ""));
-        ambient_occlusion_sampler = AssetLoader<Sampler>::get(data.value("ambient_occlusion_sampler", ""));      
+        ambient_occlusion_sampler = AssetLoader<Sampler>::get(data.value("ambient_occlusion_sampler", ""));
         emissive_map = AssetLoader<Texture2D>::get(data.value("emissive_map", ""));
         emissive_sampler = AssetLoader<Sampler>::get(data.value("emissive_sampler", ""));
 
