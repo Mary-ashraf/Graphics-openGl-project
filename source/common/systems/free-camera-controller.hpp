@@ -40,11 +40,11 @@ namespace our
             //     if(camera && controller) break;
             // }
             std::vector<CollisionBoundary> Walls;
-            glm::vec2& x_Boundary = glm::vec2(1.0f);
-            glm::vec2& y_Boundary = glm::vec2(1.0f);
-            glm::vec2& z_Boundary = glm::vec2(1.0f);
+            glm::vec2 x_Boundary = glm::vec2(1.0f);
+            glm::vec2 y_Boundary = glm::vec2(1.0f);
+            glm::vec2 z_Boundary = glm::vec2(1.0f);
 
-            glm::vec3& position1 = glm::vec3(1.0f);
+            glm::vec3 position1 = glm::vec3(1.0f);
             int WallsNumber;
             for(auto entity : world->getEntities()){
             // If we hadn't found a camera yet, we look for a camera in this entity
