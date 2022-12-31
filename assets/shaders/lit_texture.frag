@@ -3,8 +3,12 @@
 in Varyings {
    vec4 color;
    vec2 tex_coord;
+   //The vertex position relative to the world space
    vec3 world;
+   //vector from the vertex to the eye relative to the world space
    vec3 view;
+      //normal on the surface relative to the world space
+
    vec3 normal;
 } fsin;
 
@@ -29,15 +33,23 @@ struct TexturedMaterial{
 };
 
 struct Light {
-   int type;
+   int type; //0 point, 1 directional, 2 spot
+   //Phong model (ambient, diffuse, specular)
    vec3 diffuse;
    vec3 specular;
    vec3 ambient;
    vec3 emissive;
+   //Position  -> for spot and point light types
+	//Direction -> for spot and directional light types
    vec3 position, direction;
+   //attenuation -> used for spot and point light types
+	//intensity of the light is affected by this equation -> 1/(a + b*d + c*d^2)
+	//where a is attenuation_constant, b is attenuation_linear and c is attenuation_quadratic
    float attenuation_constant;
    float attenuation_linear;
    float attenuation_quadratic;
+   //For spot light -> to define the inner and outer cones of spot light
+	//For the space that lies between outer and inner cones, light intensity is interpolated
    float inner_angle, outer_angle;
 };
 

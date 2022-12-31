@@ -130,34 +130,42 @@
                     "sampler": "default"
                 },
                 "moon":{
-                    "type": "tinted_lit",
-                    //"type": "textured_lit",
-                    "shader": "litTinted",
-                    //"shader": "litTextured",
+                    //"type": "tinted_lit",
+                    "type": "textured_lit",
+                    //"shader": "litTinted",
+                    "shader": "litTextured",
+                    // 
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
                         },
                         "depthTesting":{
                             "enabled": true
-                        }
+                        },
+                        "blending":{
+                            "enabled": true,
+                            "sourceFactor": "GL_SRC_ALPHA",
+                            "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+                        },
+                        "depthMask": false
                     },
+                    "transparent": true,
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
-                    "ambient": [0, 0, 0, 1],
-                    "shininess": 16.0
+                    "ambient": [0, 0, 1, 1],
+                    "shininess": 30.0,
                     //"diffuse": 
-                    // "albedo_map": "albedo",
-                    // "roughness_map": "roughness",
-                    // "specular_map": "specular",
-                    // "albedo_sampler": "default",
-                    // "roughness_sampler": "default",
-                    // "specular_sampler": "default",
-                    // "ambient_occlusion_map": "ambient_occlusion",
-                    // "emissive_map": "emissive",
-                    // "ambient_occlusion_sampler": "default",
-                    // "sampler": "default"
-                    // "emissive_sampler": "default"
+                    "albedo_map": "albedo_black",
+                    "roughness_map": "roughness_black",
+                    "specular_map": "specular_black",
+                    "albedo_sampler": "default",
+                    "roughness_sampler": "default",
+                    "specular_sampler": "default",
+                    //"ambient_occlusion_map": "ambient_occlusion",
+                    //"emissive_map": "emissive",
+                    //"ambient_occlusion_sampler": "default",
+                    "sampler": "default"
+                    //"emissive_sampler": "default"
                 }
             }
         },
@@ -188,14 +196,14 @@
                 ]
             },
             {
-                "position": [0, 20,0],
+                "position": [0, 16,0],
                 //"rotation": [-90, -45, 45],
                 "rotation": [0, -180, 0],
                 "scale": [0.2, 0.2, 0.2],
                 "components": [
                     {
                         "type": "Light",
-                        "ambient": [1, 1, 1, 1],
+                        "ambient": [1, 1, 0, 1],
                         "lightType": "directional"
                         //"lightType": "point"
                         //"lightType": "spot"
