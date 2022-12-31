@@ -29,22 +29,6 @@ namespace our {
         virtual void deserialize(const nlohmann::json& data);
     };
 
-    //TODO: (Light) Implement Lit Material class
-    class LitMaterial : public Material {
-        public:
-        glm::vec4 diffuse;
-        glm::vec4 specular;
-        glm::vec4 ambient;
-        glm::vec4 emissive;
-
-        float shininess;
-
-        // This function does 2 things: setup the pipeline state and set the shader program to be used
-        virtual void setup() const;
-        // This function read a material from a json object
-        virtual void deserialize(const nlohmann::json& data);
-    };
-
     // This material adds a uniform for a tint (a color that will be sent to the shader)
     // An example where this material can be used is when the whole object has only color which defined by tint
     class TintedMaterial : public Material {
@@ -56,11 +40,14 @@ namespace our {
     };
 
     //TODO: (Light) Implement Lit Tinted Material class
-    class LitTintedMaterial : public LitMaterial {
+    class LitTintedMaterial : public Material {
         public:
         glm::vec4 albedo_tint;
         glm::vec4 specular_tint;
         glm::vec4 emissive_tint;
+        glm::vec4 ambient_tint;
+
+        float shininess;
 
         void setup() const override;
         void deserialize(const nlohmann::json& data) override;
@@ -100,16 +87,14 @@ namespace our {
     // This function returns a new material instance based on the given type
     //TODO: (Light) Add Lit Materials class
     inline Material* createMaterialFromType(const std::string& type){
-        if (type == "tinted_lit"){
-            return new LitTintedMaterial();
-        } else if(type == "textured_lit"){
-            return new LitTexturedMaterial();
-        } else if(type == "lit"){
-            return new LitMaterial();
-        } else if(type == "tinted"){
+        if (type == "tinted"){
             return new TintedMaterial();
-        } else if(type == "textured"){
+        } else if (type == "tinted_lit"){
+            return new LitTintedMaterial();
+        } else if (type == "textured"){
             return new TexturedMaterial();
+        } else if (type == "textured_lit"){
+            return new LitTexturedMaterial();
         } else{
             return new Material();
         }

@@ -25,25 +25,6 @@ namespace our {
         transparent = data.value("transparent", false);
     }
 
-    void LitMaterial::setup() const 
-    {
-        Material::setup();
-
-        //TODO: (Light) SEND NEEDED DATA TO SHADER
-    }
-
-    void LitMaterial::deserialize(const nlohmann::json& data)
-    {
-        Material::deserialize(data);
-        if(!data.is_object()) return;
-        diffuse = data.value("diffuse", glm::vec4(1.0f));
-        specular = data.value("specular", glm::vec4(1.0f));
-        ambient = data.value("ambient", glm::vec4(1.0f));
-        emissive = data.value("emissive", glm::vec4(1.0f));
-
-        shininess = data.value("shininess", 1.0f);
-    }
-
     // This function should call the setup of its parent and
     // set the "tint" uniform to the value in the member variable tint 
     void TintedMaterial::setup() const {
@@ -64,6 +45,7 @@ namespace our {
         LitMaterial::setup();
 
         //TODO: (Light) SEND NEEDED DATA TO SHADER
+        
     }
 
     void LitTintedMaterial::deserialize(const nlohmann::json& data)
@@ -73,6 +55,9 @@ namespace our {
         albedo_tint = data.value("albedo_tint", glm::vec4(1.0f));
         specular_tint = data.value("specular_tint", glm::vec4(1.0f));
         emissive_tint = data.value("emissive_tint", glm::vec4(1.0f));
+        ambient_tint = data.value("ambient_tint", glm::vec4(0.1f));
+
+        shininess = data.value("shininess", 1.0f);
     }
 
     // This function should call the setup of its parent and
@@ -119,6 +104,7 @@ namespace our {
         LitTintedMaterial::setup();
 
         //TODO: (Light) SEND NEEDED DATA TO SHADER
+        
     }
 
     void LitTexturedMaterial::deserialize(const nlohmann::json& data)
