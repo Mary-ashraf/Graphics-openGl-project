@@ -207,7 +207,7 @@ namespace our
         // TODO: (Req 9) Draw all the opaque commands
         // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render
         // TODO: (Req 10) Get the camera position
-        glm::vec3 cameraPosition = glm::vec3(VM[3][0], VM[3][1], VM[3][2]); // 4th row
+        glm::vec3 cameraPosition = camera->getOwner()->localTransform.position; // 4th row
         for (unsigned long int i = 0; i < opaqueCommands.size(); i++)
         {
             opaqueCommands[i].material->transparent = false;

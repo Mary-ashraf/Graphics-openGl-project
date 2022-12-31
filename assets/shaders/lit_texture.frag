@@ -60,7 +60,6 @@ void main(){
     vec3 view = normalize(fsin.view);
 
     int count = min(light_count, MAX_LIGHT_COUNT);
-    vec3 accumulated_light = vec3(0.0);
    Material material;
    material.diffuse = tex_material.albedo_tint * texture(tex_material.albedo_map, fsin.tex_coord).rgb;
    material.specular = tex_material.specular_tint * texture(tex_material.specular_map, fsin.tex_coord).rgb;
@@ -69,6 +68,8 @@ void main(){
    float roughness = mix(tex_material.roughness_range.x, tex_material.roughness_range.y, 
                            texture(tex_material.roughness_map, fsin.tex_coord).r);
    material.shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
+   vec3 emissive = material.emissive;
+   vec3 accumulated_light = emissive;
 
     for(int index = 0; index < count; index++){
       Light light = lights[index];
@@ -94,10 +95,9 @@ void main(){
       vec3 diffuse = material.diffuse * light.ambient * lambert;
       vec3 specular = material.specular * light.ambient * phong;
       vec3 ambient = material.ambient * light.ambient;
-      vec3 emissive = material.emissive * light.emissive;
       //accumulated_light += (diffuse + specular + emissive) * attenuation;
       //accumulated_light = tex_material.albedo_tint;
-      accumulated_light += (diffuse + specular) * attenuation + ambient + emissive;
+      accumulated_light += (diffuse + specular) * attenuation + ambient;
    }
    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
    //frag_color = vec4(accumulated_light, 1.0f);

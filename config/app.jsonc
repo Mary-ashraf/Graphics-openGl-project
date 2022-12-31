@@ -54,7 +54,8 @@
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
-                "sphere": "assets/models/sphere.obj"
+                "sphere": "assets/models/sphere.obj",
+                "smooth_sphere": "assets/models/smooth-sphere.obj"
             },
             "samplers":{
                 "default":{},
@@ -144,18 +145,19 @@
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
                     "ambient": [0, 0, 0, 1],
-                    "shininess": 0.5
-                    //"albedo_map": "albedo",
-                    //"roughness_map": "roughness",
-                    //"specular_map": "specular",
-                    //"albedo_sampler": "default",
-                    //"roughness_sampler": "default",
-                    //"specular_sampler": "default"
-                    //"ambient_occlusion_map": "ambient_occlusion",
-                    //"emissive_map": "emissive",
-                    //"ambient_occlusion_sampler": "default",
-                    //"sampler": "default",
-                    //"emissive_sampler": "default"
+                    "shininess": 16.0
+                    //"diffuse": 
+                    // "albedo_map": "albedo",
+                    // "roughness_map": "roughness",
+                    // "specular_map": "specular",
+                    // "albedo_sampler": "default",
+                    // "roughness_sampler": "default",
+                    // "specular_sampler": "default",
+                    // "ambient_occlusion_map": "ambient_occlusion",
+                    // "emissive_map": "emissive",
+                    // "ambient_occlusion_sampler": "default",
+                    // "sampler": "default"
+                    // "emissive_sampler": "default"
                 }
             }
         },
@@ -186,8 +188,9 @@
                 ]
             },
             {
-                "position": [0, 10,-8],
-                "rotation": [-90, -45, 45],
+                "position": [0, 20,0],
+                //"rotation": [-90, -45, 45],
+                "rotation": [0, -180, 0],
                 "scale": [0.2, 0.2, 0.2],
                 "components": [
                     {
@@ -294,12 +297,12 @@
             },
             {
                 "position": [0, 10, 0],
-                "rotation": [45, 45, 0],
+                "rotation": [0, 0, 0],
                 "scale": [5, 5, 5],
                 "components": [
                     {
                         "type": "Mesh Renderer",
-                        "mesh": "sphere",
+                        "mesh": "smooth_sphere",
                         "material": "moon"
                     }
                     // {

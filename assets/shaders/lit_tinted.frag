@@ -77,8 +77,10 @@ void main(){
       //vec3 emissive = material.emissive * light.emissive;
       //accumulated_light += (diffuse + specular + emissive) * attenuation + ambient;
       accumulated_light += (diffuse + specular) * attenuation + ambient;
-      //accumulated_light = light_direction;
+      //accumulated_light = specular;
    }
    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+   //frag_color = vec4(dot(view, normal));
+   //frag_color = vec4(accumulated_light, 1.0f);
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

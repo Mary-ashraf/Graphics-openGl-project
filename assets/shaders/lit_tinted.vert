@@ -25,9 +25,10 @@ void main(){
     vs_out.world = (objectToWorld * vec4(position, 1.0f)).xyz;
     //vs_out.tex_coord = tex_coord;
     vs_out.view = cameraPosition - vs_out.world;
+    //vs_out.view = cameraPosition;
     gl_Position = transform * vec4(position, 1.0); // apply transformation mat to the vec
     vs_out.color = color;
     //vs_out.world = world;
     //vs_out.view = view;
-    vs_out.normal = normalize((objectToInvTranspose * vec4(normal, 0.0f)).xyz);
+    vs_out.normal = normalize((objectToWorld * vec4(normal, 0.0f)).xyz);
 }
