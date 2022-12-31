@@ -31,7 +31,7 @@ struct Light {
    vec3 ambient;
 
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
-    vec3 position,
+    vec3 position;
     vec3 direction;
 
     // Attentuation factors are used for point and spot lights.
@@ -69,7 +69,7 @@ void main() {
     int count = min(light_count, MAX_LIGHT_COUNT);
 
     // Initially the accumulated light will be zero.
-    vec3 accumulated_light = emissive_tint;
+    vec3 accumulated_light = emissive_tint.rgb;
 
     // Now we will loop over all the lights.
     for(int index = 0; index < count; index++){
@@ -97,15 +97,15 @@ void main() {
         }
 
         // This will be used to compute the diffuse factor.
-        vec3 lambert = max(0.0f, dot(fsin.normal, -light_direction));
+        float lambert = max(0.0f, dot(fsin.normal, -light_direction));
 
         // This will be used to compute the phong specular. 
-        vec3 phong = pow(max(0.0f, dot(fsin.view, reflect(light_direction, fsin.normal))), shininess);
+        float phong = pow(max(0.0f, dot(fsin.view, reflect(light_direction, fsin.normal))), shininess);
 
         // Now we compute the components of the light separately.
-        vec3 diffuse = albedo_tint * light.diffuse * lambert;
-        vec3 specular = specular_tint * light.specular * phong;
-        vec3 ambient = ambient_tint * light.ambient;
+        vec3 diffuse = albedo_tint.rgb * light.diffuse * lambert;
+        vec3 specular = specular_tint.rgb * light.specular * phong;
+        vec3 ambient = ambient_tint.rgb * light.ambient;
 
         // Then we accumulate the light components additively.
         accumulated_light += (diffuse + specular) * attenuation + ambient;

@@ -32,7 +32,7 @@ struct Light {
    vec3 ambient;
 
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
-    vec3 position,
+    vec3 position;
     vec3 direction;
 
     // Attentuation factors are used for point and spot lights.
@@ -80,10 +80,10 @@ void main() {
     // We are using a formula designed the Blinn-Phong model which is a popular approximation of the Phong model.
     // The source of the formula is http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
     // It is noteworthy that we clamp the roughness to prevent its value from ever becoming 0 or 1 to prevent lighting artifacts.
-    shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
+    float shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
 
     // Initially the accumulated light will be zero.
-    vec3 accumulated_light = emissive_tint * texture(emissive_map, fsin.tex_coord).rgb;
+    vec3 accumulated_light = emissive_tint.rgb * texture(emissive_map, fsin.tex_coord).rgb;
 
     // Now we will loop over all the lights.
     for(int index = 0; index < count; index++){
@@ -111,15 +111,15 @@ void main() {
         }
 
         // This will be used to compute the diffuse factor.
-        vec3 lambert = max(0.0f, dot(fsin.normal, -light_direction));
+        float lambert = max(0.0f, dot(fsin.normal, -light_direction));
 
         // This will be used to compute the phong specular. 
-        vec3 phong = pow(max(0.0f, dot(fsin.view, reflect(light_direction, fsin.normal))), shininess);
+        float phong = pow(max(0.0f, dot(fsin.view, reflect(light_direction, fsin.normal))), shininess);
 
         // Now we compute the components of the light separately.
-        vec3 diffuse = albedo_tint * light.diffuse * texture(albedo_map, fsin.tex_coord).rgb * lambert;
-        vec3 specular = specular_tint * light.specular * texture(specular_map, fsin.tex_coord).rgb * phong;
-        vec3 ambient = ambient_tint * light.ambient * texture(ambient_occlusion_map, fsin.tex_coord).r;
+        vec3 diffuse = albedo_tint.rgb * light.diffuse * texture(albedo_map, fsin.tex_coord).rgb * lambert;
+        vec3 specular = specular_tint.rgb * light.specular * texture(specular_map, fsin.tex_coord).rgb * phong;
+        vec3 ambient = ambient_tint.rgb * light.ambient * texture(ambient_occlusion_map, fsin.tex_coord).r;
 
         // Then we accumulate the light components additively.
         accumulated_light += (diffuse + specular) * attenuation + ambient;

@@ -58,7 +58,7 @@ namespace our {
         if(!data.is_object()) return;
         albedo_tint = data.value("albedo_tint", glm::vec4(1.0f));
         specular_tint = data.value("specular_tint", glm::vec4(1.0f));
-        emissive_tint = data.value("emissive_tint", glm::vec4(1.0f));
+        emissive_tint = data.value("emissive_tint", glm::vec4(0.0f));
         ambient_tint = data.value("ambient_tint", glm::vec4(0.1f));
 
         shininess = data.value("shininess", 1.0f);
