@@ -3,11 +3,13 @@
 #include "../ecs/world.hpp"
 #include "../components/camera.hpp"
 #include "../components/mesh-renderer.hpp"
+#include "../components/light.hpp"
 #include "../asset-loader.hpp"
 
 #include <glad/gl.h>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 namespace our
 {
@@ -33,6 +35,9 @@ namespace our
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
         std::vector<RenderCommand> transparentCommands;
+        //List of lights in the scene
+        std::vector<LightComponent*> lights;
+        //std::vector<std::pair<glm::vec3, glm::vec3>> lights_position_direction;
         // Objects used for rendering a skybox
         Mesh* skySphere;
         TexturedMaterial* skyMaterial;

@@ -44,8 +44,7 @@ namespace our {
             //Bind and set elements buffer
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned int), &elements[0], GL_STATIC_DRAW);
-            elementCount = elements.size();
-
+            elementCount = (int)elements.size();
 
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, (void*)0);

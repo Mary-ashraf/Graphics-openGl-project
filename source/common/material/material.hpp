@@ -6,6 +6,7 @@
 #include "../shader/shader.hpp"
 
 #include <glm/vec4.hpp>
+#include <glm/vec2.hpp>
 #include <json/json.hpp>
 
 namespace our {
@@ -28,11 +29,36 @@ namespace our {
         virtual void deserialize(const nlohmann::json& data);
     };
 
+    class LitMaterial : public Material {
+        public:
+        glm::vec4 diffuse;
+        glm::vec4 specular;
+        glm::vec4 ambient;
+        glm::vec4 emissive;
+
+        float shininess;
+
+        // This function does 2 things: setup the pipeline state and set the shader program to be used
+        virtual void setup() const;
+        // This function read a material from a json object
+        virtual void deserialize(const nlohmann::json& data);
+    };
+
     // This material adds a uniform for a tint (a color that will be sent to the shader)
     // An example where this material can be used is when the whole object has only color which defined by tint
     class TintedMaterial : public Material {
     public:
         glm::vec4 tint;
+
+        void setup() const override;
+        void deserialize(const nlohmann::json& data) override;
+    };
+
+    class LitTintedMaterial : public LitMaterial {
+        public:
+        glm::vec4 albedo_tint;
+        glm::vec4 specular_tint;
+        glm::vec4 emissive_tint;
 
         void setup() const override;
         void deserialize(const nlohmann::json& data) override;
@@ -53,13 +79,38 @@ namespace our {
         void deserialize(const nlohmann::json& data) override;
     };
 
+    class LitTexturedMaterial : public LitTintedMaterial {
+            Texture2D* albedo_map;
+            Sampler* albedo_sampler;
+            Texture2D* specular_map;
+            Sampler* specular_sampler;
+            Texture2D* roughness_map;
+            Sampler* roughness_sampler;
+            glm::vec2 roughness_range; 
+            Texture2D* ambient_occlusion_map; 
+            Sampler* ambient_occlusion_sampler;          
+            Texture2D* emissive_map;
+            Sampler* emissive_sampler;
+
+            float alphaThreshold;
+
+            void setup() const override;
+            void deserialize(const nlohmann::json& data) override;
+    };
+
     // This function returns a new material instance based on the given type
     inline Material* createMaterialFromType(const std::string& type){
-        if(type == "tinted"){
+        if (type == "tinted_lit"){
+            return new LitTintedMaterial();
+        } else if(type == "textured_lit"){
+            return new LitTexturedMaterial();
+        } else if(type == "lit"){
+            return new LitMaterial();
+        } else if(type == "tinted"){
             return new TintedMaterial();
         } else if(type == "textured"){
             return new TexturedMaterial();
-        } else {
+        } else{
             return new Material();
         }
     }
