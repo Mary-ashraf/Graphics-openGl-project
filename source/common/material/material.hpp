@@ -80,6 +80,8 @@ namespace our {
     };
 
     class LitTexturedMaterial : public LitTintedMaterial {
+            Texture2D* texture;
+            Sampler* sampler;
             Texture2D* albedo_map;
             Sampler* albedo_sampler;
             Texture2D* specular_map;

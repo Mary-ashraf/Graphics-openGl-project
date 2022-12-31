@@ -61,6 +61,7 @@ struct Light {
 uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
 uniform TexturedMaterial tex_material;
+uniform sampler2D tex;
 
 out vec4 frag_color;
 
@@ -68,10 +69,12 @@ uniform vec4 tint;
 
 void main(){
     ////////////////////////////////////////////////////////////////////////////////////////////
-    vec3 normal = normalize(fsin.normal);
-    vec3 view = normalize(fsin.view);
+    //Normalize normal and view vectors
+	//Normalize function returns a vector with the same direction as its parameter, v, but with length 1
+   vec3 normal = normalize(fsin.normal);
+   vec3 view = normalize(fsin.view);
 
-    int count = min(light_count, MAX_LIGHT_COUNT);
+   int count = min(light_count, MAX_LIGHT_COUNT);
    Material material;
    material.diffuse = tex_material.albedo_tint * texture(tex_material.albedo_map, fsin.tex_coord).rgb;
    material.specular = tex_material.specular_tint * texture(tex_material.specular_map, fsin.tex_coord).rgb;
@@ -111,7 +114,7 @@ void main(){
       //accumulated_light = tex_material.albedo_tint;
       accumulated_light += (diffuse + specular) * attenuation + ambient;
    }
-   frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+   frag_color = fsin.color * vec4(accumulated_light, 1.0) * texture(tex, fsin.tex_coord);
    //frag_color = vec4(accumulated_light, 1.0f);
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

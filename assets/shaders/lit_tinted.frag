@@ -48,6 +48,7 @@ struct Light {
 uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
 uniform Material material;
+uniform float alpha;
 
 out vec4 frag_color;
 
@@ -108,7 +109,7 @@ void main(){
       //accumulated_light = specular;
    }
    //final light of the pixel
-   frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+   frag_color = fsin.color * vec4(accumulated_light, alpha);
    //frag_color = vec4(dot(view, normal));
    //frag_color = vec4(accumulated_light, 1.0f);
     ////////////////////////////////////////////////////////////////////////////////////////////

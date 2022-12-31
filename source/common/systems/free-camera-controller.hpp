@@ -81,11 +81,11 @@ namespace our
             glm::vec3& rotation = entity->localTransform.rotation;
             // If the left mouse button is pressed, we get the change in the mouse location
             // and use it to update the camera rotation
-            // if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
-            //     glm::vec2 delta = app->getMouse().getMouseDelta();
-            //     rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
-            //     rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
-            // }
+            if(app->getMouse().isPressed(GLFW_MOUSE_BUTTON_1)){
+                glm::vec2 delta = app->getMouse().getMouseDelta();
+                rotation.x -= delta.y * controller->rotationSensitivity; // The y-axis controls the pitch
+                rotation.y -= delta.x * controller->rotationSensitivity; // The x-axis controls the yaw
+            }
 
             // We prevent the pitch from exceeding a certain angle from the XZ plane to prevent gimbal locks
             if(rotation.x < -glm::half_pi<float>() * 0.99f) rotation.x = -glm::half_pi<float>() * 0.99f;
@@ -115,6 +115,14 @@ namespace our
             // if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += front * (deltaTime * current_sensitivity.z);
             // if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= front * (deltaTime * current_sensitivity.z);
 
+            if(app->getKeyboard().isPressed(GLFW_KEY_W)) position += front * (deltaTime * current_sensitivity.z);
+            if(app->getKeyboard().isPressed(GLFW_KEY_S)) position -= front * (deltaTime * current_sensitivity.z);
+            // Q & E moves the player up and down
+            if(app->getKeyboard().isPressed(GLFW_KEY_Q)) position += up * (deltaTime * current_sensitivity.y);
+            if(app->getKeyboard().isPressed(GLFW_KEY_E)) position -= up * (deltaTime * current_sensitivity.y);
+            // A & D moves the player left or right 
+            if(app->getKeyboard().isPressed(GLFW_KEY_D)) position += right * (deltaTime * current_sensitivity.x);
+            if(app->getKeyboard().isPressed(GLFW_KEY_A)) position -= right * (deltaTime * current_sensitivity.x);
 
             // if(position.z > 1 || (position.z < 0 && position.z > -6) || (position.z < -7 && position.z > -13) || position.z < -14) 
             // {
@@ -158,70 +166,70 @@ namespace our
             // {
             //    app->changeState("win");
             // }
-                if(WallsNumber == 3)
-                {
-                    if(position.z <= (Walls[0].z_position+1) && position.z >Walls[0].z_position)
-                    {
-                        if(position.x > Walls[0].x_Boundary.x && position.x < Walls[0].x_Boundary.y && position.y > Walls[0].y_Boundary.x && position.y < Walls[0].y_Boundary.y)
-                        {
-                            position += front * (deltaTime * current_sensitivity.z);
-                        }
-                        else
-                        {
-                            app->changeState("play");
-                        }
-                    }
-                    else if(position.z <= (Walls[1].z_position+1) && position.z >Walls[1].z_position)
-                    {
-                        if(position.x > Walls[1].x_Boundary.x && position.x < Walls[1].x_Boundary.y && position.y > Walls[1].y_Boundary.x && position.y < Walls[1].y_Boundary.y)
-                        {
-                            position += front * (deltaTime * current_sensitivity.z);
-                        }
-                        else
-                        {
-                            app->changeState("lose");
-                        }
-                    }
-                    else if(position.z <= (Walls[2].z_position+1) && position.z >Walls[2].z_position)
-                    {
-                        if(position.x > Walls[2].x_Boundary.x && position.x < Walls[2].x_Boundary.y && position.y > Walls[2].y_Boundary.x && position.y < Walls[2].y_Boundary.y)
-                        {
-                            position += front * (deltaTime * current_sensitivity.z);
-                        }
-                        else
-                        {
-                            app->changeState("lose");
-                        }
-                    }
-                    else
-                    {
-                        position += front * (deltaTime * current_sensitivity.z);
-                    }
-                }
-                if(position.z < z_Boundary.y)
-                {
-                    app->changeState("win");
-                }
+            //     if(WallsNumber == 3)
+            //     {
+            //         if(position.z <= (Walls[0].z_position+1) && position.z >Walls[0].z_position)
+            //         {
+            //             if(position.x > Walls[0].x_Boundary.x && position.x < Walls[0].x_Boundary.y && position.y > Walls[0].y_Boundary.x && position.y < Walls[0].y_Boundary.y)
+            //             {
+            //                 position += front * (deltaTime * current_sensitivity.z);
+            //             }
+            //             else
+            //             {
+            //                 app->changeState("play");
+            //             }
+            //         }
+            //         else if(position.z <= (Walls[1].z_position+1) && position.z >Walls[1].z_position)
+            //         {
+            //             if(position.x > Walls[1].x_Boundary.x && position.x < Walls[1].x_Boundary.y && position.y > Walls[1].y_Boundary.x && position.y < Walls[1].y_Boundary.y)
+            //             {
+            //                 position += front * (deltaTime * current_sensitivity.z);
+            //             }
+            //             else
+            //             {
+            //                 app->changeState("lose");
+            //             }
+            //         }
+            //         else if(position.z <= (Walls[2].z_position+1) && position.z >Walls[2].z_position)
+            //         {
+            //             if(position.x > Walls[2].x_Boundary.x && position.x < Walls[2].x_Boundary.y && position.y > Walls[2].y_Boundary.x && position.y < Walls[2].y_Boundary.y)
+            //             {
+            //                 position += front * (deltaTime * current_sensitivity.z);
+            //             }
+            //             else
+            //             {
+            //                 app->changeState("lose");
+            //             }
+            //         }
+            //         else
+            //         {
+            //             position += front * (deltaTime * current_sensitivity.z);
+            //         }
+            //     }
+            //     if(position.z < z_Boundary.y)
+            //     {
+            //         app->changeState("win");
+            //     }
                 
 
-            // W & S moves the player up and down
-            if(app->getKeyboard().isPressed(GLFW_KEY_W) && position.y <y_Boundary.x)
-            {
-                position += up * (deltaTime * current_sensitivity.y);
-            }
-            if(app->getKeyboard().isPressed(GLFW_KEY_S) && position.y > y_Boundary.y)
-            {
-                position -= up * (deltaTime * current_sensitivity.y);
-            }
-            // A & D moves the player left or right 
-            if(app->getKeyboard().isPressed(GLFW_KEY_D) && position.x <x_Boundary.x)
-            {
-                position += right * (deltaTime * current_sensitivity.x);
-            }
-            if(app->getKeyboard().isPressed(GLFW_KEY_A) && position.x >x_Boundary.y) 
-            {
-                position -= right * (deltaTime * current_sensitivity.x);
-            }
+            // // W & S moves the player up and down
+            // if(app->getKeyboard().isPressed(GLFW_KEY_W) && position.y <y_Boundary.x)
+            // {
+            //     position += up * (deltaTime * current_sensitivity.y);
+            // }
+            // if(app->getKeyboard().isPressed(GLFW_KEY_S) && position.y > y_Boundary.y)
+            // {
+            //     position -= up * (deltaTime * current_sensitivity.y);
+            // }
+            // // A & D moves the player left or right 
+            // if(app->getKeyboard().isPressed(GLFW_KEY_D) && position.x <x_Boundary.x)
+            // {
+            //     position += right * (deltaTime * current_sensitivity.x);
+            // }
+            // if(app->getKeyboard().isPressed(GLFW_KEY_A) && position.x >x_Boundary.y) 
+            // {
+            //     position -= right * (deltaTime * current_sensitivity.x);
+            // }
         }
 
         // When the state exits, it should call this function to ensure the mouse is unlocked

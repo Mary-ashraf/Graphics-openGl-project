@@ -76,6 +76,7 @@ namespace our
         shader->set("material.ambient", glm::vec3(ambient.r, ambient.g, ambient.b));
         shader->set("material.emissive", glm::vec3(emissive_tint.r, emissive_tint.g, emissive_tint.b));
         shader->set("material.shininess", shininess);
+        shader->set("alpha", ambient.a);
 
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
@@ -144,7 +145,7 @@ namespace our
         }
         else
         {
-            albedo_sampler->unbind(0);
+            Sampler::unbind(0);
         }
         shader->set("tex_material.albedo_map", 0);
         glActiveTexture(GL_TEXTURE0 + 1);
@@ -162,7 +163,7 @@ namespace our
         }
         else
         {
-            specular_sampler->unbind(1);
+            Sampler::unbind(1);
         }
         shader->set("tex_material.specular_map", 1);
 
@@ -178,7 +179,7 @@ namespace our
         if (ambient_occlusion_sampler)
             ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
         else
-            ambient_occlusion_sampler->unbind(2);
+            Sampler::unbind(2);
         shader->set("tex_material.ambient_occlusion_map", 2);
         glActiveTexture(GL_TEXTURE0 + 3);
         if (roughness_map)
@@ -190,7 +191,7 @@ namespace our
         if (roughness_sampler)
             roughness_sampler->bind(3); // check if sampler is not null then bind it
         else
-            roughness_sampler->unbind(3);
+            Sampler::unbind(3);
         shader->set("tex_material.roughness_map", 3);
         glActiveTexture(GL_TEXTURE0 + 4);
         if (emissive_map)
@@ -202,8 +203,18 @@ namespace our
         if (emissive_sampler)
             emissive_sampler->bind(4); // check if sampler is not null then bind it
         else
-            emissive_sampler->unbind(4);
+            Sampler::unbind(4);
         shader->set("tex_material.emissive_map", 4);
+        glActiveTexture(GL_TEXTURE0 + 5);
+        if (texture)
+            texture->bind(); // check if the texture is not null then bind it
+        else
+            Texture2D::unbind();
+        if (sampler)
+            sampler->bind(5); // check if sampler is not null then bind it
+        else
+            Sampler::unbind(5);
+        shader->set("tex", 5); // send the unit number to the uniform variable "tex"
         /*shader->set("material.diffuse", );
         shader->set("material.specular", specular);
         shader->set("material.ambient", ambient);
@@ -230,6 +241,8 @@ namespace our
         ambient_occlusion_sampler = AssetLoader<Sampler>::get(data.value("ambient_occlusion_sampler", ""));
         emissive_map = AssetLoader<Texture2D>::get(data.value("emissive_map", ""));
         emissive_sampler = AssetLoader<Sampler>::get(data.value("emissive_sampler", ""));
+        texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
+        sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
 
         alphaThreshold = data.value("alphaThreshold", 0.0f);
     }

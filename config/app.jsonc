@@ -470,15 +470,15 @@
                 "textured": {
                     "vs": "assets/shaders/textured.vert",
                     "fs": "assets/shaders/textured.frag"
+                },
+                "litTextured": {
+                    "vs": "assets/shaders/lit_texture.vert",
+                    "fs": "assets/shaders/lit_texture.frag"
+                },
+                "litTinted": {
+                    "vs": "assets/shaders/lit_tinted.vert",
+                    "fs": "assets/shaders/lit_tinted.frag"
                 }
-                // "litTextured": {
-                //     "vs": "assets/shaders/lit_texture.vert",
-                //     "fs": "assets/shaders/lit_texture.frag"
-                // },
-                // "litTinted": {
-                //     "vs": "assets/shaders/lit_tinted.vert",
-                //     "fs": "assets/shaders/lit_tinted.frag"
-                // }
 
             },
             "textures": {
@@ -487,13 +487,23 @@
                 "wood": "assets/textures/wood.jpg",
                 "feathers": "assets/textures/f.jpg",
                 "glass": "assets/textures/glass-panels.png",
-                "monkey": "assets/textures/monkey.png"
+                "monkey": "assets/textures/monkey.png",
+                "albedo": "assets/materials/albedo.jpg",
+                "roughness": "assets/materials/roughness.jpg",
+                "specular": "assets/materials/specular.jpg",
+                "ambient_occlusion": "assets/materials/ambient_occlusion.jpg",
+                "emissive": "assets/materials/emissive.jpg",
+                "specular_black": "assets/materials/specular_black.jpg",
+                "albedo_black": "assets/materials/albedo_black.jpg",
+                "roughness_black": "assets/materials/roughness_black.jpg",
+                "sand": "assets/textures/sand.jpg"
             },
             "meshes": {
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
-                "sphere": "assets/models/sphere.obj"
+                "sphere": "assets/models/sphere.obj",
+                "smooth_sphere": "assets/models/smooth-sphere.obj"
             },
             "samplers": {
                 "default": {},
@@ -516,8 +526,8 @@
                     "tint": [0.45, 0.4, 0.5, 1]
                 },
                 "wood": {
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "tinted_lit",
+                    "shader": "litTinted",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": false
@@ -527,6 +537,8 @@
                         }
                     },
                     "tint": [1, 1, 1, 1],
+                    "ambient": [0.2, 0.5, 1, 1],
+                    "shininess": 30.0,
                     "texture": "wood",
                     "sampler": "default"
                 },
@@ -553,8 +565,8 @@
                     "sampler": "pixelated"
                 },
                 "grass": {
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "textured_lit",
+                    "shader": "litTextured",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": false
@@ -564,8 +576,16 @@
                         }
                     },
                     "tint": [1, 1, 1, 1],
-                    "texture": "grass",
-                    "sampler": "default"
+                    "texture": "sand",
+                    "sampler": "default",
+                    "ambient": [1, 1, 0, 1],
+                    "shininess": 4.0,
+                    "albedo_map": "albedo",
+                    "roughness_map": "roughness",
+                    "specular_map": "specular",
+                    "albedo_sampler": "default",
+                    "roughness_sampler": "default",
+                    "specular_sampler": "default"                
                 },
                 "monkey": {
                     "type": "textured",
@@ -583,8 +603,12 @@
                     "sampler": "default"
                 },
                 "moon": {
-                    "type": "textured",
-                    "shader": "textured",
+                    // "type": "textured",
+                    // "shader": "textured",
+                    //"type": "tinted_lit",
+                    "type": "textured_lit",
+                    //"shader": "litTinted",
+                    "shader": "litTextured",
                     "pipelineState": {
                         "faceCulling": {
                             "enabled": false
@@ -595,7 +619,17 @@
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
-                    "sampler": "default"
+                    "ambient": [0.25, 0.5, 1, 1],
+                    "shininess": 16.0,
+                    //"albedo_map": "albedo_black",
+                    //"roughness_map": "roughness_black",
+                    //"specular_map": "specular_black",
+                    //"albedo_sampler": "default",
+                    //"roughness_sampler": "default",
+                    //"specular_sampler": "default",
+                    "sampler": "default",
+                    "emissive_map": "emissive",
+                    "emissive_sampler": "default"
                 }
             }
         },
@@ -627,15 +661,57 @@
                     "z_Boundary": [1, -19],
                     "WallsNumber": 3,
                     "x_Boundary0": [-5, -2],
-                    "y_Boundary0": [-0.5, 1],
+                    "y_Boundary0": [-1, 1],
                     "z_position0": 0,
                     "x_Boundary1": [-7, -4],
                     "y_Boundary1": [3, 5],
                     "z_position1": -7,
                     "x_Boundary2": [-4, -1],
-                    "y_Boundary2": [-0.5, 1],
+                    "y_Boundary2": [-1, 1],
                     "z_position2": -14
                 }]
+            },
+            {
+                "position": [0, 8, 4],
+                "rotation": [-60, -70, -50],
+                //"rotation": [0, -180, 0],
+                "scale": [0.1, 0.1, 0.1],
+                "components": [{
+                        "type": "Light",
+                        "ambient": [1, 1, 1, 1],
+                        "lightType": "directional"
+                        //"lightType": "point"
+                        //"lightType": "spot"
+
+                    },
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "monkey",
+                        "material": "monkey"
+                    }
+                ]
+            },
+            {
+                "position": [-10, 5, 4],
+                "rotation": [-60, 210, -50],
+                //"rotation": [0, -180, 0],
+                "scale": [0.1, 0.1, 0.1],
+                "components": [{
+                        "type": "Light",
+                        "ambient": [1, 0, 1, 1],
+                        //"lightType": "directional"
+                        //"lightType": "point"
+                        "lightType": "spot",
+                        "inner_angle": 1.58,
+                        "outer_angle": 4.13,
+                        "attenuation_quadratic": 0.2
+                    },
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "monkey",
+                        "material": "monkey"
+                    }
+                ]
             },
             {
                 "position": [0, -1, 0],
