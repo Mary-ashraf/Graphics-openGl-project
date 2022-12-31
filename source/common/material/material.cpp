@@ -29,7 +29,7 @@ namespace our {
     {
         Material::setup();
 
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        //TODO: (Light) SEND NEEDED DATA TO SHADER
     }
 
     void LitMaterial::deserialize(const nlohmann::json& data)
@@ -63,7 +63,7 @@ namespace our {
     {
         LitMaterial::setup();
 
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        //TODO: (Light) SEND NEEDED DATA TO SHADER
     }
 
     void LitTintedMaterial::deserialize(const nlohmann::json& data)
@@ -101,7 +101,7 @@ namespace our {
     {
         LitTintedMaterial::setup();
 
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        //TODO: (Light) SEND NEEDED DATA TO SHADER
     }
 
     void LitTexturedMaterial::deserialize(const nlohmann::json& data)

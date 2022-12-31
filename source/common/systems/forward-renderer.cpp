@@ -143,6 +143,7 @@ namespace our {
                     opaqueCommands.push_back(command);
                 }
             }
+            //TODO: (Light) push light components into the list of lights
             if(auto light = entity->getComponent<LightComponent>(); light){
                 lights.push_back(light);
             }
@@ -194,7 +195,8 @@ namespace our {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
             opaqueCommands[i].material->shader->set("transform", VP* opaqueCommands[i].localToWorld);  
-            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
+            //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
+            //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT
             opaqueCommands[i].mesh->draw();
         }
 
@@ -232,7 +234,8 @@ namespace our {
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
             transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
-            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/  
+            //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
+            //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT 
             transparentCommands[i].mesh->draw();
         }
 

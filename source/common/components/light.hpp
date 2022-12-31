@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+//TODO: (Light) Implement light component hpp
+
 namespace our {
 
     // An enum that defines the types of lights
@@ -25,7 +27,6 @@ namespace our {
         float attenuation_constant;
         float attenuation_linear;
         float attenuation_quadratic;
-
 
         float inner_angle;
         float outer_angle;

@@ -15,6 +15,7 @@
             "postprocess": "assets/shaders/postprocess/vignette.frag"
         },
         "assets":{
+            //TODO: (Light) ADD SHADERS FOR LIT
             "shaders":{
                 "tinted":{
                     "vs":"assets/shaders/tinted.vert",
@@ -44,6 +45,7 @@
                     "MAG_FILTER": "GL_NEAREST"
                 }
             },
+            //TODO: (Light) ADD MATERIALS FOR LIT
             "materials":{
                 "metal":{
                     "type": "tinted",
@@ -128,6 +130,7 @@
             }
         },
         "world":[
+            //TODO: (Light) CHANGE MATERIALS OF OBJECTS TO LIT
             {
                 "position": [0, 0, 10],
                 "components": [

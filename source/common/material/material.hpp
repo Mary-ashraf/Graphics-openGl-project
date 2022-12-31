@@ -29,6 +29,7 @@ namespace our {
         virtual void deserialize(const nlohmann::json& data);
     };
 
+    //TODO: (Light) Implement Lit Material class
     class LitMaterial : public Material {
         public:
         glm::vec4 diffuse;
@@ -54,6 +55,7 @@ namespace our {
         void deserialize(const nlohmann::json& data) override;
     };
 
+    //TODO: (Light) Implement Lit Tinted Material class
     class LitTintedMaterial : public LitMaterial {
         public:
         glm::vec4 albedo_tint;
@@ -79,6 +81,7 @@ namespace our {
         void deserialize(const nlohmann::json& data) override;
     };
 
+    //TODO: (Light) Implement Lit Textured Material class
     class LitTexturedMaterial : public LitTintedMaterial {
             Texture2D* albedo_map;
             Sampler* albedo_sampler;
@@ -99,6 +102,7 @@ namespace our {
     };
 
     // This function returns a new material instance based on the given type
+    //TODO: (Light) Add Lit Materials class
     inline Material* createMaterialFromType(const std::string& type){
         if (type == "tinted_lit"){
             return new LitTintedMaterial();
