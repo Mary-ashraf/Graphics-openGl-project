@@ -82,10 +82,27 @@ namespace our {
         //TODO: (Req 7) Write this function
         TintedMaterial::setup(); // call the setup of its parent
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
-        if (texture) texture->bind(); // check if the texture is not null then bind it 
-        if (sampler) sampler->bind(0); // check if sampler is not null then bind it
-        shader->set("tex", 0); // send the unit number to the uniform variable "tex" 
-    
+        
+        our::Texture2D::setActive(0);
+        if (texture)    // check if the texture is not null then bind it 
+        {
+            texture->bind(); 
+            
+            if (sampler)    // check if sampler is not null then bind it
+            {
+                sampler->bind(0); 
+            } 
+            else
+            {
+                sampler->unbind(0); 
+            }
+
+            shader->set("tex", 0); // send the unit number to the uniform variable "tex" 
+        }
+        else
+        {
+            texture->unbind(); 
+        }
     }
 
     // This function read the material data from a json object
@@ -110,17 +127,13 @@ namespace our {
         if(!data.is_object()) return;
 
         albedo_map = AssetLoader<Texture2D>::get(data.value("albedo_map", ""));
-        albedo_sampler = AssetLoader<Sampler>::get(data.value("albedo_sampler", ""));
         specular_map = AssetLoader<Texture2D>::get(data.value("specular_map", ""));
-        specular_sampler = AssetLoader<Sampler>::get(data.value("specular_sampler", ""));
         roughness_map = AssetLoader<Texture2D>::get(data.value("roughness_map", ""));
-        roughness_sampler = AssetLoader<Sampler>::get(data.value("roughness_sampler", ""));
-        roughness_range = data.value("roughness_range", glm::vec2(0.0f, 1.0f)); 
-        ambient_occlusion_map = AssetLoader<Texture2D>::get(data.value("ambient_occlusion_map", ""));
-        ambient_occlusion_sampler = AssetLoader<Sampler>::get(data.value("ambient_occlusion_sampler", ""));      
+        ambient_occlusion_map = AssetLoader<Texture2D>::get(data.value("ambient_occlusion_map", ""));     
         emissive_map = AssetLoader<Texture2D>::get(data.value("emissive_map", ""));
-        emissive_sampler = AssetLoader<Sampler>::get(data.value("emissive_sampler", ""));
+        sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
 
+        roughness_range = data.value("roughness_range", glm::vec2(0.0f, 1.0f)); 
         alphaThreshold = data.value("alphaThreshold", 0.0f);
     }
 

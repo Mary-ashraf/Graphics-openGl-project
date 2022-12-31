@@ -28,11 +28,11 @@ namespace our
         specular = data.value("specular", glm::vec3(1.0f));  
         ambient = data.value("ambient", glm::vec3(0.1f));
 
-        attenuation_constant = data.value("attenuation_constant", 0f);
-        attenuation_linear = data.value("attenuation_linear", 0f);
+        attenuation_constant = data.value("attenuation_constant", 0.0f);
+        attenuation_linear = data.value("attenuation_linear", 0.0f);
         attenuation_quadratic = data.value("attenuation_quadratic", 1.0f);
 
-        inner_angle = data.value("inner_angle", glm::pi<float>()/4);
-        outer_angle = data.value("outer_angle", glm::pi<float>()/2);
+        inner_angle = data.value("inner_angle", glm::quarter_pi<float>());
+        outer_angle = data.value("outer_angle", glm::half_pi<float>());
     }
 }

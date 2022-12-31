@@ -34,6 +34,11 @@ namespace our {
             glBindTexture(GL_TEXTURE_2D, name);
         }
 
+        // This method sets the active GL_TEXTURE_2D texture unit
+        static void setActive(GLuint passedname){
+            glActiveTexture(GL_TEXTURE0 + passedname);
+        }
+
         // This static method ensures that no texture is bound to GL_TEXTURE_2D
         static void unbind(){
             //TODO: (Req 5) Complete this function

@@ -69,6 +69,7 @@ set(COMMON_SOURCES
         source/common/ecs/world.hpp
         source/common/ecs/world.cpp
 
+        # TODO: (Light) Dont forget to add light component files here
         source/common/components/light.hpp
         source/common/components/light.cpp
         source/common/components/camera.hpp

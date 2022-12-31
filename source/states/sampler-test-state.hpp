@@ -52,7 +52,7 @@ class SamplerTestState: public our::State {
         glClear(GL_COLOR_BUFFER_BIT);
         shader->use();
         // Here we set the active texture unit to 0 then bind the texture to it
-        glActiveTexture(GL_TEXTURE0);
+        our::Texture2D::setActive(0);
         texture->bind();
         // Then we bind the sampler to unit 0
         sampler->bind(0);
