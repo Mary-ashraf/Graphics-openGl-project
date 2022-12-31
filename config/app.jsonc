@@ -49,7 +49,8 @@
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
-                "sphere": "assets/models/sphere.obj"
+                "sphere": "assets/models/sphere.obj",
+                "ball": "assets/models/smooth-sphere.obj"
             },
             "samplers":{
                 "default":{},
@@ -286,6 +287,21 @@
                     {
                         "type": "Movement",
                         "angularVelocity": [0, 90, 0]
+                    }
+                ]
+            },
+            {
+                "position": [0, 10, -5],
+                "rotation": [0, 180, 0],
+                "scale": [0.25, 0.25, 0.25],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "ball",
+                        "material": "metal"
+                    },
+                    {
+                        "type": "Light"
                     }
                 ]
             }
