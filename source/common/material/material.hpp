@@ -84,17 +84,13 @@ namespace our {
     //TODO: (Light) Implement Lit Textured Material class
     class LitTexturedMaterial : public LitTintedMaterial {
             Texture2D* albedo_map;
-            Sampler* albedo_sampler;
             Texture2D* specular_map;
-            Sampler* specular_sampler;
             Texture2D* roughness_map;
-            Sampler* roughness_sampler;
-            glm::vec2 roughness_range; 
-            Texture2D* ambient_occlusion_map; 
-            Sampler* ambient_occlusion_sampler;          
+            Texture2D* ambient_occlusion_map;     
             Texture2D* emissive_map;
-            Sampler* emissive_sampler;
+            Sampler* sampler;
 
+            glm::vec2 roughness_range;
             float alphaThreshold;
 
             void setup() const override;

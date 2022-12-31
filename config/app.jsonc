@@ -24,12 +24,24 @@
                 "textured":{
                     "vs":"assets/shaders/textured.vert",
                     "fs":"assets/shaders/textured.frag"
+                },
+                "tinted_lit":{
+                    "vs":"assets/shaders/tinted_lit.vert",
+                    "fs":"assets/shaders/tinted_lit.frag"
+                },
+                "textured_lit":{
+                    "vs":"assets/shaders/textured_lit.vert",
+                    "fs":"assets/shaders/textured_lit.frag"
                 }
             },
+            //TODO: (Light) ADD TEXTURES FOR LIT
             "textures":{
                 "moon": "assets/textures/moon.jpg",
                 "grass": "assets/textures/grass_ground_d.jpg",
                 "wood": "assets/textures/wood.jpg",
+                "wood_albedo" : "assets/textures/materials/wood/albedo.jpg",
+                "wood_specular" : "assets/textures/materials/wood/specular.jpg",
+                "wood_roughness" : "assets/textures/materials/wood/roughness.jpg",
                 "glass": "assets/textures/glass-panels.png",
                 "monkey": "assets/textures/monkey.png"
             },
@@ -125,6 +137,23 @@
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
+                    "sampler": "default"
+                },
+                "wood_lit":{
+                    "type": "textured_lit",
+                    "shader": "textured_lit",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "albedo_map": "wood_albedo",
+                    "specular_map": "wood_specular",
+                    "roughness_map": "wood_roughness",
                     "sampler": "default"
                 }
             }
@@ -252,7 +281,7 @@
                     {
                         "type": "Mesh Renderer",
                         "mesh": "sphere",
-                        "material": "moon"
+                        "material": "wood_lit"
                     },
                     {
                         "type": "Movement",
