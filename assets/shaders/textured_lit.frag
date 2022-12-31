@@ -75,8 +75,11 @@ void main() {
     // Make sure that the actual light count never exceeds the maximum light count.
     int count = min(light_count, MAX_LIGHT_COUNT);
 
-    //We calculate the shininess from the roughness
+    // Roughness is used to compute the shininess (specular power).
     float roughness = mix(roughness_range.x, roughness_range.y, texture(roughness_map, fsin.tex_coord).r);
+    // We are using a formula designed the Blinn-Phong model which is a popular approximation of the Phong model.
+    // The source of the formula is http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
+    // It is noteworthy that we clamp the roughness to prevent its value from ever becoming 0 or 1 to prevent lighting artifacts.
     shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
 
     // Initially the accumulated light will be zero.

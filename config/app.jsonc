@@ -43,11 +43,11 @@
                 "wood_specular" : "assets/textures/materials/wood/specular.jpg",
                 "wood_roughness" : "assets/textures/materials/wood/roughness.jpg",
                 "glass": "assets/textures/glass-panels.png",
-                "monkey": "assets/textures/monkey.png"
+                "feathers": "assets/textures/feathers.png"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
-                "monkey": "assets/models/monkey.obj",
+                "bird": "assets/models/bird.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
                 "ball": "assets/models/smooth-sphere.obj"
@@ -110,7 +110,7 @@
                     "texture": "grass",
                     "sampler": "default"
                 },
-                "monkey":{
+                "feathers":{
                     "type": "textured",
                     "shader": "textured",
                     "pipelineState": {
@@ -122,7 +122,7 @@
                         }
                     },
                     "tint": [1, 1, 1, 1],
-                    "texture": "monkey",
+                    "texture": "feathers",
                     "sampler": "default"
                 },
                 "moon":{
@@ -192,8 +192,8 @@
                 "components": [
                     {
                         "type": "Mesh Renderer",
-                        "mesh": "monkey",
-                        "material": "monkey"
+                        "mesh": "bird",
+                        "material": "feathers"
                     },
                     {
                         "type": "Movement",
@@ -291,7 +291,7 @@
                 ]
             },
             {
-                "position": [0, 10, -5],
+                "position": [0, 12, -6],
                 "rotation": [0, 180, 0],
                 "scale": [0.25, 0.25, 0.25],
                 "components": [

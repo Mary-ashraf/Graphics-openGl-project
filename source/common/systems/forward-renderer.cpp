@@ -197,8 +197,19 @@ namespace our {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
             opaqueCommands[i].material->shader->set("transform", VP* opaqueCommands[i].localToWorld);  
+
             //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
+            opaqueCommands[i].material->shader->set("objectToWorld", opaqueCommands[i].localToWorld);
+            opaqueCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(opaqueCommands[i].localToWorld)));
+            opaqueCommands[i].material->shader->set("cameraPosition", glm::vec3(camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(camera->getOwner()->localTransform.position, 1.0f)));
+
             //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT
+            opaqueCommands[i].material->shader->set("light_count", (GLint)lights.size());
+            for (int j = 0; j < lights.size(); j++)
+            {
+
+            }
+
             opaqueCommands[i].mesh->draw();
         }
 
@@ -236,8 +247,19 @@ namespace our {
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
             transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
+
             //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
+            transparentCommands[i].material->shader->set("objectToWorld", transparentCommands[i].localToWorld);
+            transparentCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(transparentCommands[i].localToWorld)));
+            transparentCommands[i].material->shader->set("cameraPosition", glm::vec3(camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(camera->getOwner()->localTransform.position, 1.0f)));
+
             //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT 
+            transparentCommands[i].material->shader->set("light_count", (GLint)lights.size());
+            for (int j = 0; j < lights.size(); j++)
+            {
+                
+            }
+
             transparentCommands[i].mesh->draw();
         }
 
