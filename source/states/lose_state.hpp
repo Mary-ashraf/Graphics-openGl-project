@@ -12,7 +12,7 @@
 
 //TODO: (Game) Implement Lose State
 
-// This state shows how to use some of the abstractions we created to make a menu.
+// This state shows the screen when player loses in the game
 class lose_state: public our::State {
 
     // A meterial holding the menu shader and the menu texture to draw
@@ -85,24 +85,12 @@ class lose_state: public our::State {
         auto& keyboard = getApp()->getKeyboard();
 
         if(keyboard.justPressed(GLFW_KEY_ENTER)){
-        // If the escape  key is pressed in this frame, go to the play state
+        // If the enter  key is pressed in this frame, go to the play state
         getApp()->changeState("menu");
         }
-        // if(keyboard.justPressed(GLFW_KEY_SPACE)){
-        //     // If the space key is pressed in this frame, go to the play state
-        //     getApp()->changeState("play");
-        // } else if(keyboard.justPressed(GLFW_KEY_ESCAPE)) {
-        //     // If the escape key is pressed in this frame, exit the game
-        //     getApp()->close();
-        // }
-
         // Get a reference to the mouse object and get the current mouse position
         auto& mouse = getApp()->getMouse();
         glm::vec2 mousePosition = mouse.getMousePosition();
-
-        // If the mouse left-button is just pressed, check if the mouse was inside
-        // any menu button. If it was inside a menu button, run the action of the button.
-
 
         // Get the framebuffer size to set the viewport and the create the projection matrix.
         glm::ivec2 size = getApp()->getFrameBufferSize();
@@ -127,11 +115,7 @@ class lose_state: public our::State {
         // window anyway.
         menuMaterial->setup();
         menuMaterial->shader->set("transform", VP*M);
-        rectangle->draw();
-
-        // For every button, check if the mouse is inside it. If the mouse is inside, we draw the highlight rectangle over it.
-
-        
+        rectangle->draw();        
     }
 
     void onDestroy() override {
