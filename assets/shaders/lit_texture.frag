@@ -38,7 +38,6 @@ struct Light {
    vec3 diffuse;
    vec3 specular;
    vec3 ambient;
-   vec3 emissive;
    //Position  -> for spot and point light types
 	//Direction -> for spot and directional light types
    vec3 position, direction;
@@ -74,47 +73,70 @@ void main(){
    vec3 normal = normalize(fsin.normal);
    vec3 view = normalize(fsin.view);
 
+   //ensuring that the light sources doesn't exceed the maximum count
    int count = min(light_count, MAX_LIGHT_COUNT);
+   //creating an instance of material to sample from the textures according to the tex_coord
    Material material;
+   //albedo is used to set the value of diffuse
    material.diffuse = tex_material.albedo_tint * texture(tex_material.albedo_map, fsin.tex_coord).rgb;
+   //specular is used to set the value of specular
    material.specular = tex_material.specular_tint * texture(tex_material.specular_map, fsin.tex_coord).rgb;
+   //emissive is used to set the value of emissive
    material.emissive = tex_material.emissive_tint * texture(tex_material.emissive_map, fsin.tex_coord).rgb;
+   //ambient occlusion is used to set the value of ambient to allow for the occlusion of darker areas
    material.ambient = material.diffuse * texture(tex_material.ambient_occlusion_map, fsin.tex_coord).r;
+   //roughness is used to set the value of specular power
    float roughness = mix(tex_material.roughness_range.x, tex_material.roughness_range.y, 
                            texture(tex_material.roughness_map, fsin.tex_coord).r);
    material.shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
+   //setting the value of emissive with material.emissive
    vec3 emissive = material.emissive;
+   //starting the light with emissive value so as when their is no light the emissive is rendered correctly
    vec3 accumulated_light = emissive;
 
-    for(int index = 0; index < count; index++){
+   //looping over the light sources
+   for(int index = 0; index < count; index++){
       Light light = lights[index];
       vec3 light_direction;
+      //set initial value for attenuation as no attenuation in directional light
       float attenuation = 1;
       if(light.type == TYPE_DIRECTIONAL)
          light_direction = light.direction;
       else {
+         //for point and spot lights we calculate the light direction
          light_direction = fsin.world - light.position;
+         //length function returns sqrt(x[0]^2 + x[1]^2 + ......);
          float distance = length(light_direction);
+         //getting unit vector that has the same direction of the light
          light_direction /= distance;
+         //calculating flactuations in intensity due to the distance from light source
          attenuation *= 1.0f / (light.attenuation_constant +
                         light.attenuation_linear * distance +
                         light.attenuation_quadratic * distance * distance);
          if(light.type == TYPE_SPOT){
+            //for spot lights get inner and outer cone -> add thyeir effect to the attenuation
             float angle = acos(dot(light.direction, light_direction));
             attenuation *= smoothstep(light.outer_angle, light.inner_angle, angle);
          }
       }
+      //reflect function takes (incident, normal) and returns the reflection direction calculated as I - 2.0 * dot(N, I) * N
+      //For the function to work correctly normal vector must be normalized, thus initially we normalized the vector above
       vec3 reflected = reflect(light_direction, normal);
+      //calculate lambert and phong factors
       float lambert = max(0.0f, dot(normal, -light_direction));
       float phong = pow(max(0.0f, dot(view, reflected)), material.shininess);
+      //As cclor= M.ambient * I.ambient + M.diffuse * I.diffuse * lambert + M.specular * I.specular * phong
+      //so color = ambient + diffuse + specular
       vec3 diffuse = material.diffuse * light.ambient * lambert;
       vec3 specular = material.specular * light.ambient * phong;
       vec3 ambient = material.ambient * light.ambient;
       //accumulated_light += (diffuse + specular + emissive) * attenuation;
       //accumulated_light = tex_material.albedo_tint;
+      //taking attenuation factor into consideration
       accumulated_light += (diffuse + specular) * attenuation + ambient;
    }
-   frag_color = fsin.color * vec4(accumulated_light, 1.0) * texture(tex, fsin.tex_coord);
+   //final light of the pixel
+   frag_color = fsin.color * vec4(accumulated_light, 1.0) * texture(tex, fsin.tex_coord);//taking the texture into consideration
    //frag_color = vec4(accumulated_light, 1.0f);
     ////////////////////////////////////////////////////////////////////////////////////////////
 }

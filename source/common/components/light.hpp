@@ -16,18 +16,19 @@ namespace our {
     class LightComponent : public Component {
 
         public:
-        LightType lightType;
+        LightType lightType; //point, directional or spot
 
+        //main parameters for all light types
         glm::vec3 diffuse;
         glm::vec3 specular;
         glm::vec3 ambient;
-        glm::vec3 emissive;
 
+        //attenuation costants for point and spot lights
         float attenuation_constant;
         float attenuation_linear;
         float attenuation_quadratic;
 
-
+        //cone angles for spot light
         float inner_angle;
         float outer_angle;
 

@@ -14,7 +14,6 @@ struct Material {
    vec3 diffuse;
    vec3 specular;
    vec3 ambient;
-   vec3 emissive;
    float shininess;
 };
 
@@ -24,7 +23,6 @@ struct Light {
    vec3 diffuse;
    vec3 specular;
    vec3 ambient;
-   //vec3 emissive;
    //Position  -> for spot and point light types
 	//Direction -> for spot and directional light types
    vec3 position, direction;
@@ -66,6 +64,7 @@ void main(){
    int count = min(light_count, MAX_LIGHT_COUNT);
    vec3 accumulated_light = vec3(0.0);
 
+   //looping over the light sources
    for(int index = 0; index < count; index++){
       Light light = lights[index];
       vec3 light_direction;

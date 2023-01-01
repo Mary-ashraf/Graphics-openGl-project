@@ -13,22 +13,20 @@ out Varyings {
 } vs_out;
 
 uniform mat4 transform;
+//to transform the surface normal
 uniform mat4 objectToInvTranspose;
+//to pass the data of the vertex relative to the world space
 uniform mat4 objectToWorld;
-uniform mat4 view_projection;
+//used to calculate the specular
 uniform vec3 cameraPosition;
 
 void main(){
-    //TODO: (Req 7) Change the next line to apply the transformation matrix
-    //gl_Position = vec4(position, 1.0);
-    //vs_out.color = color;
+    //calculate the position relative to the world space
     vs_out.world = (objectToWorld * vec4(position, 1.0f)).xyz;
-    //vs_out.tex_coord = tex_coord;
+    //calculate the view vector relative to the world space to be passed to the fragment shader to calculate the phong factor
     vs_out.view = cameraPosition - vs_out.world;
-    //vs_out.view = cameraPosition;
     gl_Position = transform * vec4(position, 1.0); // apply transformation mat to the vec
     vs_out.color = color;
-    //vs_out.world = world;
-    //vs_out.view = view;
-    vs_out.normal = normalize((objectToWorld * vec4(normal, 0.0f)).xyz);
+    //calculate the normal
+    vs_out.normal = normalize((objectToInvTranspose * vec4(normal, 0.0f)).xyz);
 }

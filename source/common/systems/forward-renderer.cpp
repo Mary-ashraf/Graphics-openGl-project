@@ -213,7 +213,6 @@ namespace our
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
             opaqueCommands[i].material->shader->set("transform", VP * opaqueCommands[i].localToWorld);
-            opaqueCommands[i].material->shader->set("view_projection", VP);
             opaqueCommands[i].material->shader->set("objectToWorld", opaqueCommands[i].localToWorld);
             opaqueCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(opaqueCommands[i].localToWorld)));
             opaqueCommands[i].material->shader->set("cameraPosition", cameraPosition);
@@ -224,7 +223,6 @@ namespace our
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "diffuse", lights[j]->diffuse);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "specular", lights[j]->specular);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "ambient", lights[j]->ambient);
-                opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "emissive", lights[j]->emissive);
                 opaqueCommands[i].material->shader->set("lights[" + std::to_string(j) + "]." + "type", static_cast<int>(lights[j]->lightType));
 
                 switch (lights[j]->lightType)
@@ -285,7 +283,6 @@ namespace our
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
             transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
-            transparentCommands[i].material->shader->set("view_projection", VP);
             transparentCommands[i].material->shader->set("objectToWorld", transparentCommands[i].localToWorld);
             transparentCommands[i].material->shader->set("objectToInvTranspose", glm::transpose(glm::inverse(transparentCommands[i].localToWorld)));
             transparentCommands[i].material->shader->set("cameraPosition", cameraPosition);
@@ -320,7 +317,6 @@ namespace our
                 }
             }
             transparentCommands[i].material->shader->set("light_count", (GLint)lights.size());
-            //transparentCommands[i].material->shader->set("light_count", 1);
             transparentCommands[i].mesh->draw();
         }
 
