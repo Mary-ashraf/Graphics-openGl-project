@@ -24,28 +24,33 @@ in Varyings {
 // Now we will use a single struct for all light types.
 struct Light {
     // This will hold the light type.
-    int type;
-    
+       int type; //0 point, 1 directional, 2 spot
+
+    // Phong model (ambient, diffuse, specular)   
     // This defines the color and intensity of the light.
-   vec3 diffuse;
-   vec3 specular;
-   vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    vec3 ambient;
 
     // Position is used for point and spot lights. Direction is used for directional and spot lights.
     vec3 position;
     vec3 direction;
 
     // Attentuation factors are used for point and spot lights.
+    //intensity of the light is affected by this equation -> 1/(a + b*d + c*d^2)
+	//where a is attenuation_constant, b is attenuation_linear and c is attenuation_quadratic
     float attenuation_constant;
     float attenuation_linear;
     float attenuation_quadratic;
 
-    // Cone angles are used for spot lights.
+    // Cone angles are used for spot lights to define the inner and outer cones of spot light
+	//For the space that lies between outer and inner cones, light intensity is interpolated
     float inner_angle;
     float outer_angle;
 };
 
 // Now we receive light array and the actual number of lights sent from the cpu.
+//vector of all lights
 uniform Light lights[MAX_LIGHT_COUNT];
 uniform int light_count;
 
@@ -69,6 +74,7 @@ out vec4 frag_color;
 
 void main() {
     // We normalize the normal and the view. These are done once and reused for every light type.
+    //Normalize function returns a vector with the same direction as its parameter, v, but with length 1
     vec3 normal = normalize(fsin.normal); // Although the normal was already normalized, it may become shorter during interpolation.
     vec3 view = normalize(fsin.view);
 
@@ -82,29 +88,35 @@ void main() {
     // It is noteworthy that we clamp the roughness to prevent its value from ever becoming 0 or 1 to prevent lighting artifacts.
     float shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
 
-    // Initially the accumulated light will be zero.
+    // Initially the accumulated light will be the emissive.
     vec3 accumulated_light = emissive_tint.rgb * texture(emissive_map, fsin.tex_coord).rgb;
 
     // Now we will loop over all the lights.
     for(int index = 0; index < count; index++){
         Light light = lights[index];
         vec3 light_direction;
+        //set initial value for attenuation as no attenuation in directional light
         float attenuation = 1;
         if(light.type == TYPE_DIRECTIONAL)
             light_direction = light.direction; // If light is directional, use its direction as the light direction
         else {
             // If not directional, compute the direction from the position.
+            //for point and spot lights we calculate the light direction
             light_direction = fsin.world - light.position;
+            //length function returns sqrt(x[0]^2 + x[1]^2 + ......);
             float distance = length(light_direction);
+            //getting unit vector that has the same direction of the light
             light_direction /= distance;
 
             // And compute the attenuation.
+            //calculating flactuations in intensity due to the distance from light source
             attenuation *= 1.0f / (light.attenuation_constant +
             light.attenuation_linear * distance +
             light.attenuation_quadratic * distance * distance);
 
             if(light.type == TYPE_SPOT){
                 // If it is a spot light, comput the angle attenuation.
+                //for spot lights get inner and outer cone -> add their effect to the attenuation
                 float angle = acos(dot(light.direction, light_direction));
                 attenuation *= smoothstep(light.outer_angle, light.inner_angle, angle);
             }
@@ -114,16 +126,22 @@ void main() {
         float lambert = max(0.0f, dot(fsin.normal, -light_direction));
 
         // This will be used to compute the phong specular. 
+        //reflect function takes (incident, normal) and returns the reflection direction calculated as I - 2.0 * dot(N, I) * N
+        //For the function to work correctly normal vector must be normalized, thus initially we normalized the vector above
         float phong = pow(max(0.0f, dot(fsin.view, reflect(light_direction, fsin.normal))), shininess);
 
         // Now we compute the components of the light separately.
+        //As color = M.ambient * I.ambient + M.diffuse * I.diffuse * lambert + M.specular * I.specular * phong
+        //so color = ambient + diffuse + specular
         vec3 diffuse = albedo_tint.rgb * light.diffuse * texture(albedo_map, fsin.tex_coord).rgb * lambert;
         vec3 specular = specular_tint.rgb * light.specular * texture(specular_map, fsin.tex_coord).rgb * phong;
         vec3 ambient = ambient_tint.rgb * light.ambient * texture(ambient_occlusion_map, fsin.tex_coord).r;
 
         // Then we accumulate the light components additively.
+        //taking attenuation factor into consideration
         accumulated_light += (diffuse + specular) * attenuation + ambient;
     }
 
+   //final light of the pixel
     frag_color = fsin.color * vec4(accumulated_light, 1.0f);
 }

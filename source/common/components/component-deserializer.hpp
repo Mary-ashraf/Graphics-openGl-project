@@ -6,6 +6,7 @@
 #include "free-camera-controller.hpp"
 #include "movement.hpp"
 #include "light.hpp"
+#include "Collision.hpp"
 
 namespace our {
 
@@ -27,6 +28,10 @@ namespace our {
         //TODO: (Light) Add an option to deserialize a "LightComponent"
          else if (type == LightComponent::getID()) {
             component = entity->addComponent<LightComponent>();
+        }
+        //TODO: (Game) Add an option to deserialize a "CollisionComponent"
+        else if (type == CollisionComponent::getID()) {
+            component = entity->addComponent<CollisionComponent>();
         }
         if(component) component->deserialize(data);
     }

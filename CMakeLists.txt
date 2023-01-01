@@ -69,6 +69,9 @@ set(COMMON_SOURCES
         source/common/ecs/world.hpp
         source/common/ecs/world.cpp
 
+        # TODO: (Game) Dont forget to add collision component files here
+        source/common/components/collision.hpp
+        source/common/components/collision.cpp
         # TODO: (Light) Dont forget to add light component files here
         source/common/components/light.hpp
         source/common/components/light.cpp
