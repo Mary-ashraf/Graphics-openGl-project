@@ -37,6 +37,7 @@ namespace our
         /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
 
+    //This function read the lit material data from a json object
     void LitMaterial::deserialize(const nlohmann::json &data)
     {
         Material::deserialize(data);
@@ -68,9 +69,11 @@ namespace our
         tint = data.value("tint", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
+    //This function calls the setup of its parent and pass the nedded data to the shaders
     void LitTintedMaterial::setup() const
     {
         LitMaterial::setup();
+        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
         shader->set("material.diffuse", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
         shader->set("material.specular", glm::vec3(specular.r, specular.g, specular.b));
         shader->set("material.ambient", glm::vec3(ambient.r, ambient.g, ambient.b));
@@ -78,9 +81,9 @@ namespace our
         shader->set("material.shininess", shininess);
         shader->set("alpha", ambient.a);
 
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
 
+    //This function read the lit tinted material data from a json object
     void LitTintedMaterial::deserialize(const nlohmann::json &data)
     {
         LitMaterial::deserialize(data);
@@ -99,15 +102,16 @@ namespace our
         // TODO: (Req 7) Write this function
         TintedMaterial::setup();                       // call the setup of its parent
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0);
         if (texture)
             texture->bind(); // check if the texture is not null then bind it
         else
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         if (sampler)
             sampler->bind(0); // check if sampler is not null then bind it
         else
-            sampler->unbind(0);
+            Sampler::unbind(0); //if null unbind
         shader->set("tex", 0); // send the unit number to the uniform variable "tex"
     }
 
@@ -122,14 +126,17 @@ namespace our
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
     }
 
+    //This function calls the setup of its parent and pass the needed data to the shader
     void LitTexturedMaterial::setup() const
     {
         LitTintedMaterial::setup();
+        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
         shader->set("tex_material.roughness_range", roughness_range);
         shader->set("tex_material.albedo_tint", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
         shader->set("tex_material.specular_tint", glm::vec3(specular_tint.r, specular_tint.g, specular_tint.b));
         shader->set("tex_material.emissive_tint", glm::vec3(emissive_tint.r, emissive_tint.g, emissive_tint.b));
         shader->set("alphaThreshold", alphaThreshold); // set the "alphaThreshold" uniform to the value in the member variable alphaThreshold
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0);
         if (albedo_map)
         {
@@ -137,7 +144,7 @@ namespace our
         }
         else
         {
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         }
         if (albedo_sampler)
         {
@@ -145,9 +152,10 @@ namespace our
         }
         else
         {
-            Sampler::unbind(0);
+            Sampler::unbind(0); //if null unbind
         }
         shader->set("tex_material.albedo_map", 0);
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0 + 1);
         if (specular_map)
         {
@@ -155,7 +163,7 @@ namespace our
         }
         else
         {
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         }
         if (specular_sampler)
         {
@@ -163,10 +171,10 @@ namespace our
         }
         else
         {
-            Sampler::unbind(1);
+            Sampler::unbind(1); //if null unbind
         }
         shader->set("tex_material.specular_map", 1);
-
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0 + 2);
         if (ambient_occlusion_map)
         {
@@ -174,56 +182,54 @@ namespace our
         }
         else
         {
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         }
         if (ambient_occlusion_sampler)
             ambient_occlusion_sampler->bind(2); // check if sampler is not null then bind it
         else
-            Sampler::unbind(2);
+            Sampler::unbind(2); //if null unbind
         shader->set("tex_material.ambient_occlusion_map", 2);
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0 + 3);
         if (roughness_map)
         {
             roughness_map->bind(); // check if the texture is not null then bind it
         }
         else
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         if (roughness_sampler)
             roughness_sampler->bind(3); // check if sampler is not null then bind it
         else
-            Sampler::unbind(3);
+            Sampler::unbind(3); //if null unbind
         shader->set("tex_material.roughness_map", 3);
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0 + 4);
         if (emissive_map)
         {
             emissive_map->bind(); // check if the texture is not null then bind it
         }
         else
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         if (emissive_sampler)
             emissive_sampler->bind(4); // check if sampler is not null then bind it
         else
-            Sampler::unbind(4);
+            Sampler::unbind(4); //if null unbind
         shader->set("tex_material.emissive_map", 4);
+        //Specifies which texture unit to make active
         glActiveTexture(GL_TEXTURE0 + 5);
         if (texture)
             texture->bind(); // check if the texture is not null then bind it
         else
-            Texture2D::unbind();
+            Texture2D::unbind(); //if null unbind
         if (sampler)
             sampler->bind(5); // check if sampler is not null then bind it
         else
-            Sampler::unbind(5);
+            Sampler::unbind(5); //if null unbind
         shader->set("tex", 5); // send the unit number to the uniform variable "tex"
-        /*shader->set("material.diffuse", );
-        shader->set("material.specular", specular);
-        shader->set("material.ambient", ambient);
-        shader->set("material.emissive", emissive);
-        shader->set("material.shininess", shininess);*/
 
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
     }
 
+    //This function read the lit textured material data from a json object
     void LitTexturedMaterial::deserialize(const nlohmann::json &data)
     {
         LitTintedMaterial::deserialize(data);

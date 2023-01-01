@@ -29,6 +29,7 @@ namespace our {
         virtual void deserialize(const nlohmann::json& data);
     };
 
+    //Lit material inherits from material class
     class LitMaterial : public Material {
         public:
         glm::vec4 diffuse;
