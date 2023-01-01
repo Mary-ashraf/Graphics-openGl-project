@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
     our::Application app(app_config);
     
     // Register all the states of the project in the application
+    //TODO: (Game) Add Win and Lose states 
     app.registerState<lose_state>("lose");
     app.registerState<win_state>("win");
     app.registerState<Menustate>("menu");

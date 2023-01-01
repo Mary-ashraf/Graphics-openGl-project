@@ -35,6 +35,7 @@ namespace our
             FreeCameraControllerComponent *controller = nullptr;
 
             //Collision component variables
+            //TODO: (Game) Create Walls and Boundaries for movement system (Read from JSON as a Component on an Entity)
             std::vector<CollisionBoundary> Walls;
             glm::vec2 x_Boundary = glm::vec2(1.0f);
             glm::vec2 y_Boundary = glm::vec2(1.0f);
@@ -46,6 +47,7 @@ namespace our
             if(!camera) camera = entity->getComponent<CameraComponent>();
             if(!controller) controller = entity->getComponent<FreeCameraControllerComponent>();
             // If this entity has a collision compnent
+            //TODO: (Game) Find Collision Component and read walls and boundaries
             if(auto Collisions = entity->getComponent<CollisionComponent>(); Collisions){
                 x_Boundary = Collisions->x_Boundary;
                 y_Boundary = Collisions->y_Boundary;
@@ -84,6 +86,7 @@ namespace our
             // If the LEFT SHIFT key is pressed, we multiply the position sensitivity by the speed up factor
             if(app->getKeyboard().isPressed(GLFW_KEY_LEFT_SHIFT)) current_sensitivity *= controller->speedupFactor;
            
+           //TODO: (Game) Change the movement system and states based on the obtained walls
            //Collision Detection
             if(WallsNumber == 4)
             {

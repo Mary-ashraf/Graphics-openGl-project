@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+//TODO: (Light) Implement light component hpp
+
 namespace our {
 
     // An enum that defines the types of lights

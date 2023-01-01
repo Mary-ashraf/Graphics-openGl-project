@@ -131,6 +131,7 @@ namespace our
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
         transparentCommands.clear();
+        //TODO: (Light) clear the list of lights
         lights.clear();
         for (auto entity : world->getEntities())
         {
@@ -157,6 +158,7 @@ namespace our
                     opaqueCommands.push_back(command);
                 }
             }
+            //TODO: (Light) push light components into the list of lights
             // fill the vector of lights with the light components to be used in the shaders
             if (auto light = entity->getComponent<LightComponent>(); light)
             {
@@ -211,6 +213,8 @@ namespace our
         {
             opaqueCommands[i].material->transparent = false;
             opaqueCommands[i].material->setup();
+
+            //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
             // send the needed uniforms for the shaders
             opaqueCommands[i].material->shader->set("transform", VP * opaqueCommands[i].localToWorld);
             // pass mat4 that transforms local space to world space to calculate world vector
@@ -220,7 +224,7 @@ namespace our
             // send camera position for the view vector
             opaqueCommands[i].material->shader->set("cameraPosition", cameraPosition);
 
-            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
+            //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT
             // loop over all light sources and pass their data to the shaders
             for (int j = 0; j < lights.size(); j++)
             {
@@ -295,6 +299,7 @@ namespace our
         {
             transparentCommands[i].material->transparent = true;
             transparentCommands[i].material->setup();
+            //TODO: (Light) SEND THE NEEDED TRANSFORMS TO THE SHADER FOR LIGHTING SUPPORT
             // send the needed uniforms for the shaders
             transparentCommands[i].material->shader->set("transform", VP * transparentCommands[i].localToWorld);
             // pass mat4 that transforms local space to world space to calculate world vector
@@ -304,7 +309,7 @@ namespace our
             // send camera position for the view vector
             transparentCommands[i].material->shader->set("cameraPosition", cameraPosition);
 
-            /*TODO (req Light): SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT*/
+            //TODO: (Light) SEND THE LIST OF LIGHTS TO THE SHADER FOR LIGHTING SUPPORT 
             // loop over all light sources and pass their data to the shaders
             for (int j = 0; j < lights.size(); j++)
             {

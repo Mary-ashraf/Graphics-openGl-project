@@ -3,6 +3,8 @@
 #include "../ecs/component.hpp"
 #include <glm/glm.hpp>
 
+//TODO: (Game) Implement Collision Component hpp
+
 namespace our {
     
     struct CollisionBoundary {

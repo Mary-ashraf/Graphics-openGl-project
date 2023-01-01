@@ -1,5 +1,7 @@
 #version 330 core
 
+//TODO: (Light) Implement Lit Textured Fragment Shader
+
 in Varyings {
    vec4 color;
    vec2 tex_coord;

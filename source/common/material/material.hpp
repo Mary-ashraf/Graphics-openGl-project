@@ -47,6 +47,7 @@ namespace our {
 
     // This material adds a uniform for a tint (a color that will be sent to the shader)
     // An example where this material can be used is when the whole object has only color which defined by tint
+    //TODO: (Light) Implement Lit Tinted Material class
     class TintedMaterial : public Material {
     public:
         glm::vec4 tint;
@@ -70,6 +71,7 @@ namespace our {
     // - "tex" which is a Sampler2D. "texture" and "sampler" will be bound to it.
     // - "alphaThreshold" which defined the alpha limit below which the pixel should be discarded
     // An example where this material can be used is when the object has a texture
+    //TODO: (Light) Implement Lit Textured Material class
     class TexturedMaterial : public TintedMaterial {
     public:
         Texture2D* texture;
@@ -102,6 +104,7 @@ namespace our {
     };
 
     // This function returns a new material instance based on the given type
+    //TODO: (Light) Add Lit Materials class
     inline Material* createMaterialFromType(const std::string& type){
         if (type == "tinted_lit"){
             return new LitTintedMaterial();

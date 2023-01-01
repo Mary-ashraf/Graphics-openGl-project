@@ -1,6 +1,8 @@
 #include "Collision.hpp"
 #include "../deserialize-utils.hpp"
 
+//TODO: (Game) Implement Collision Component cpp
+
 namespace our {
 
     void CollisionComponent::deserialize(const nlohmann::json& data){

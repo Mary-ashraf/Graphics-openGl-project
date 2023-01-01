@@ -10,6 +10,7 @@
 #include <functional>
 #include <array>
 
+//TODO: (Game) Implement Lose State
 
 // This state shows how to use some of the abstractions we created to make a menu.
 class lose_state: public our::State {

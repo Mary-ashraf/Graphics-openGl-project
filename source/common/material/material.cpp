@@ -73,7 +73,7 @@ namespace our
     void LitTintedMaterial::setup() const
     {
         LitMaterial::setup();
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        //TODO: (Light) SEND NEEDED DATA TO SHADER
         shader->set("material.diffuse", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
         shader->set("material.specular", glm::vec3(specular.r, specular.g, specular.b));
         shader->set("material.ambient", glm::vec3(ambient.r, ambient.g, ambient.b));
@@ -130,7 +130,7 @@ namespace our
     void LitTexturedMaterial::setup() const
     {
         LitTintedMaterial::setup();
-        /*TODO (req Light): SEND NEEDED DATA TO SHADER*/
+        //TODO: (Light) SEND NEEDED DATA TO SHADER
         shader->set("tex_material.roughness_range", roughness_range);
         shader->set("tex_material.albedo_tint", glm::vec3(albedo_tint.r, albedo_tint.g, albedo_tint.b));
         shader->set("tex_material.specular_tint", glm::vec3(specular_tint.r, specular_tint.g, specular_tint.b));

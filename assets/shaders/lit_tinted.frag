@@ -1,5 +1,7 @@
 #version 330 core
 
+//TODO: (Light) Implement Lit Tinted Fragment Shader
+
 in Varyings {
    vec4 color;
    //The vertex position relative to the world space
