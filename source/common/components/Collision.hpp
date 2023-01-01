@@ -11,7 +11,7 @@ namespace our {
         float z_position;
     };
 
-    // This component denotes that any renderer should draw the given mesh using the given material at the transformation of the owning entity.
+    // This component holds the boundaries of the game, number of walls, and the boundaries of the openings in the walls
     class CollisionComponent : public Component {
     public:
         std::vector<CollisionBoundary> Walls;
@@ -19,11 +19,12 @@ namespace our {
         glm::vec2 x_Boundary = {0, 0}; 
         glm::vec2 y_Boundary = {0, 0}; 
         glm::vec2 z_Boundary = {0, 0}; 
+        //Number of walls
         int WallsNumber = 0;
         // The ID of this component type is "Collision"
         static std::string getID() { return "Collision"; }
 
-        // Receives the mesh & material from the AssetLoader by the names given in the json object
+        // Receives the data by the values given in the json object
         void deserialize(const nlohmann::json& data) override;
     };
 
