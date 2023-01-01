@@ -129,5 +129,5 @@ void main() {
     }
 
    //final light of the pixel
-    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+    frag_color = fsin.color * vec4(accumulated_light.rgb, albedo_tint.a);
 }

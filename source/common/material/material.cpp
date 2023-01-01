@@ -61,7 +61,7 @@ namespace our {
         emissive_tint = data.value("emissive_tint", glm::vec4(0.0f));
         ambient_tint = data.value("ambient_tint", glm::vec4(0.1f));
 
-        shininess = data.value("shininess", 1.0f);
+        shininess = data.value("shininess", 0.0f);
     }
 
     // This function should call the setup of its parent and
@@ -86,12 +86,12 @@ namespace our {
                 sampler->unbind(0); 
             }
 
-            shader->set("tex", 0); // send the unit number to the uniform variable "tex" 
         }
         else
         {
             texture->unbind(); 
         }
+        shader->set("tex", 0); // send the unit number to the uniform variable "tex" 
     }
 
     // This function read the material data from a json object
@@ -112,106 +112,78 @@ namespace our {
         if (albedo_map)    // check if the texture is not null then bind it 
         {
             albedo_map->bind(); 
-            
-            if (sampler)    // check if sampler is not null then bind it
-            {
-                sampler->bind(0); 
-            } 
-            else
-            {
-                sampler->unbind(0); 
-            }
-
-            shader->set("albedo_map", 0); // send the unit number to the correct uniform variable
         }
         else
         {
             albedo_map->unbind(); 
         }
+        shader->set("albedo_map", 0); // send the unit number to the correct uniform variable
 
         our::Texture2D::setActive(1);
         if (specular_map)    // check if the texture is not null then bind it 
         {
             specular_map->bind(); 
-            
-            if (sampler)    // check if sampler is not null then bind it
-            {
-                sampler->bind(1); 
-            } 
-            else
-            {
-                sampler->unbind(1); 
-            }
-
-            shader->set("specular_map", 1); // send the unit number to the correct uniform variable
         }
         else
         {
             specular_map->unbind(); 
         }
 
+
         our::Texture2D::setActive(2);
         if (roughness_map)    // check if the texture is not null then bind it 
         {
             roughness_map->bind(); 
-            
-            if (sampler)    // check if sampler is not null then bind it
-            {
-                sampler->bind(2); 
-            } 
-            else
-            {
-                sampler->unbind(2); 
-            }
-
-            shader->set("roughness_map", 2); // send the unit number to the correct uniform variable
         }
         else
         {
             roughness_map->unbind(); 
         }
 
+
         our::Texture2D::setActive(3);
         if (ambient_occlusion_map)    // check if the texture is not null then bind it 
         {
             ambient_occlusion_map->bind(); 
-            
-            if (sampler)    // check if sampler is not null then bind it
-            {
-                sampler->bind(3); 
-            } 
-            else
-            {
-                sampler->unbind(3); 
-            }
-
-            shader->set("ambient_occlusion_map", 3); // send the unit number to the correct uniform variable
         }
         else
         {
             ambient_occlusion_map->unbind(); 
         }
 
+
         our::Texture2D::setActive(4);
         if (emissive_map)    // check if the texture is not null then bind it 
         {
             emissive_map->bind(); 
-            
-            if (sampler)    // check if sampler is not null then bind it
-            {
-                sampler->bind(4); 
-            } 
-            else
-            {
-                sampler->unbind(4); 
-            }
-
-            shader->set("emissive_map", 4); // send the unit number to the correct uniform variable
         }
         else
         {
             emissive_map->unbind(); 
         }
+
+        if (sampler)    // check if sampler is not null then bind it
+        {
+            sampler->bind(0); 
+            sampler->bind(1); 
+            sampler->bind(2); 
+            sampler->bind(3); 
+            sampler->bind(4); 
+        } 
+        else
+        {
+            sampler->unbind(0); 
+            sampler->unbind(1); 
+            sampler->unbind(2); 
+            sampler->unbind(3); 
+            sampler->unbind(4); 
+        }
+
+        shader->set("albedo_map", 0);
+        shader->set("specular_map", 1);
+        shader->set("roughness_map", 2);
+        shader->set("ambient_occlusion_map", 3);
+        shader->set("emissive_map", 4);
 
         shader->set("roughness_range", roughness_range);
         shader->set("alphaThreshold", alphaThreshold);

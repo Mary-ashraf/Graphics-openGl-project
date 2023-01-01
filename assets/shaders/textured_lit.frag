@@ -81,12 +81,16 @@ void main() {
     // Make sure that the actual light count never exceeds the maximum light count.
     int count = min(light_count, MAX_LIGHT_COUNT);
 
-    // Roughness is used to compute the shininess (specular power).
-    float roughness = mix(roughness_range.x, roughness_range.y, texture(roughness_map, fsin.tex_coord).r);
-    // We are using a formula designed the Blinn-Phong model which is a popular approximation of the Phong model.
-    // The source of the formula is http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
-    // It is noteworthy that we clamp the roughness to prevent its value from ever becoming 0 or 1 to prevent lighting artifacts.
-    float shininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
+    float newshininess = shininess;
+    if (shininess == 0)
+    {
+        // Roughness is used to compute the shininess (specular power).
+        float roughness = mix(roughness_range.x, roughness_range.y, texture(roughness_map, fsin.tex_coord).r);
+        // We are using a formula designed the Blinn-Phong model which is a popular approximation of the Phong model.
+        // The source of the formula is http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html
+        // It is noteworthy that we clamp the roughness to prevent its value from ever becoming 0 or 1 to prevent lighting artifacts.
+        newshininess = 2.0f/pow(clamp(roughness, 0.001f, 0.999f), 4.0f) - 2.0f;
+    }
 
     // Initially the accumulated light will be the emissive.
     vec3 accumulated_light = emissive_tint.rgb * texture(emissive_map, fsin.tex_coord).rgb;
@@ -143,5 +147,5 @@ void main() {
     }
 
    //final light of the pixel
-    frag_color = fsin.color * vec4(accumulated_light, 1.0f);
+    frag_color = fsin.color * vec4(accumulated_light.rgb, (albedo_tint * texture(albedo_map, fsin.tex_coord)).a);
 }
